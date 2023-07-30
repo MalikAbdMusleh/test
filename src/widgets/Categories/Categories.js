@@ -6,6 +6,7 @@ import Link from "next/link";
 import SliderBlock from "../SliderBlock/SliderBlock";
 import { useDispatch } from "react-redux";
 import { setC2CCategory } from "@/redux/slices/c2c.slice";
+import { useTranslation } from "react-i18next";
 
 const Categories = ({
   title,
@@ -19,6 +20,7 @@ const Categories = ({
   const handleSelectCat = (id) => {
     dispatch(setC2CCategory(id));
   };
+  const { t, i18n } = useTranslation();
 
   const renderCategoriesImages = categoriesData.map(
     ({ imagePath, name, id, link }) => (
@@ -90,7 +92,7 @@ const Categories = ({
                 >
                   <Grid container flex alignItems="center">
                     <Typography fontWeight={400} fontSize={12} color="white">
-                      see all
+                      {t("common:home.see_all")}
                     </Typography>
                     <KeyboardArrowRightIcon
                       style={{ fontSize: 12, marginLeft: 2 }}

@@ -1,0 +1,17 @@
+{
+  "home":{
+    "sale": "SALE",
+    "auction": "Auction",
+     "categories" : "CATEGORIES" ,
+     "featured" : "FEATURED",
+     "cars" : "CARS",
+     "motorcycles" : "MOTORCYCLES" ,
+     "watercrafts" : "WATERCRAFTS",
+     "heavymachinery" : "HEAVYMACHINERY",
+     "watches" : "WATCHES",
+     "jewellery" : "JEWELLERY",
+     "carplatles" : "CARPLATES",
+     "see_all" : "see all",
+     "comming_soon" : "COMING SOON"
+    }
+}

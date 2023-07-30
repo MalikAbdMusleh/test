@@ -22,6 +22,7 @@ export default function ProductCardMain({ data }) {
       className={`item-${data?.id}`}
     >
       <Card
+        dir="ltr"
         sx={{
           minWidth: 290,
           maxWidth: 290,

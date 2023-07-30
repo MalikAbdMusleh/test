@@ -72,6 +72,7 @@ export default function SliderBlock({
       width="100%"
     >
       <Swiper
+        dir="ltr"
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
         }}

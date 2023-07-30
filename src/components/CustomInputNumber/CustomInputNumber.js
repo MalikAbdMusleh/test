@@ -23,9 +23,19 @@ const CustomInputNumber = forwardRef(
     ref
   ) => {
     const [showPassword, setShowPassword] = useState(false);
-
+    const handleInputValidation = (e) => {
+      const inputValue = e.target.value;
+      // Allow only numbers and restrict input to 9 digits
+      if (/^\d{0,9}$/.test(inputValue)) {
+        handleInputChange(e);
+      }
+    };
     return (
-      <InputMask value={value} onChange={handleInputChange} onBlur={handleBlur}>
+      <InputMask
+        value={value}
+        onChange={handleInputValidation}
+        onBlur={handleBlur}
+      >
         {(inputProps) => (
           <TextField
             inputRef={ref}
@@ -36,7 +46,7 @@ const CustomInputNumber = forwardRef(
             variant="outlined"
             margin="dense"
             value={value}
-            onChange={handleInputChange}
+            onChange={handleInputValidation}
             onBlur={handleBlur}
             helperText={helperTxt}
             error={error}

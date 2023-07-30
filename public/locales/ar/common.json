@@ -1,0 +1,18 @@
+{
+    "home":{
+ 
+        "sale": "البيع",
+        "auction": "مزاد علني",
+         "categories" : "فئات" ,
+         "featured" : "متميز",
+         "cars" : "سيارات",
+         "motorcycles" : "دراجات نارية" ,
+         "watercrafts" : "عربات مائية",
+         "heavymachinery" : "الآلات الثقيلة",
+         "watches" : "ساعات",
+         "jewellery" : "مجوهرات",
+         "carplatles" : "كاربلاتيس",
+         "see_all" : "اظهار الكل",
+         "comming_soon" : "قريباً"
+      }
+}

@@ -3,10 +3,13 @@ import { Box, Grid, LinearProgress, Skeleton, Typography } from "@mui/material";
 import { useGetBusinessesListQuery } from "@/redux/apis/businessesApi";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 const Partners = () => {
   const { data, isLoading } = useGetBusinessesListQuery();
   const router = useRouter();
+  const { t, i18n } = useTranslation();
+
   return (
     <>
       <ArrowBackIosRoundedIcon
@@ -19,7 +22,7 @@ const Partners = () => {
           fontSize: 18,
         }}
       />
-    
+
       {/* <Grid container p={2}>
       {data?.data?.map((business) => (
         <Grid item xs={12} sm={6} md={6} lg={3} xl={3} mb={5} key={business.id}>
@@ -67,7 +70,7 @@ const Partners = () => {
             fontWeight={1000}
             color={"#171717"}
           >
-            COMING SOON
+            {t("common:home.comming_soon")}
           </Typography>
         </>
       </Box>

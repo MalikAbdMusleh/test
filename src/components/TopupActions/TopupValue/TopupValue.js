@@ -7,8 +7,15 @@ export default function TopupValue({
   hasError,
   minimumBid,
   snackbarState,
+  setHasError,
+  setButtonDisabel,
 }) {
-  console.log(snackbarState);
+  const handleOnChange = (event) => {
+    const newValue = event.target.value;
+    setHasError(newValue < minimumBid); // Update hasError based on the validation result
+    setButtonDisabel(newValue < minimumBid);
+    onChange(event); // Call the onChange prop with the new value
+  };
   return (
     <Box marginTop={5}>
       <TextField
@@ -17,9 +24,13 @@ export default function TopupValue({
         label={`Your ${action} (Required)`}
         variant="outlined"
         value={value}
-        onChange={onChange}
+        onChange={handleOnChange}
         error={hasError}
-        helperText={hasError ? "This field is required" : ""}
+        helperText={
+          hasError
+            ? `Bid amount of SAR ${minimumBid.toLocaleString()} should be SAR ${minimumBid.toLocaleString()} or higher`
+            : ""
+        }
         InputLabelProps={{
           style: {
             color: "#ffffffe6",
@@ -35,7 +46,7 @@ export default function TopupValue({
       >
         The Minimum {action} amount is {minimumBid.toLocaleString()}
       </Typography>
-      {snackbarState?.open ? (
+      {/* {snackbarState?.open ? (
         <Typography
           textAlign="center"
           component="p"
@@ -47,7 +58,7 @@ export default function TopupValue({
         </Typography>
       ) : (
         ""
-      )}
+      )} */}
     </Box>
   );
 }

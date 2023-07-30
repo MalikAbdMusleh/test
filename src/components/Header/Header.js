@@ -30,7 +30,10 @@ import {
 } from "../../redux/apis/notificationApi.js";
 import { setNotification } from "@/redux/slices/notifications";
 import NotificationCard from "../NotificationCard/NotificationCard";
-import { chatApi, useGetTotalUnreadChatQuery } from "@/redux/apis/chat/chatApi.js";
+import {
+  chatApi,
+  useGetTotalUnreadChatQuery,
+} from "@/redux/apis/chat/chatApi.js";
 import { useRouter } from "next/router.js";
 import { authApi, useLogoutMutation } from "@/redux/apis/authApi.js";
 import { walletApi } from "@/redux/apis/walletApi.js";
@@ -40,7 +43,8 @@ import { watchlistsApi } from "@/redux/apis/account/myWatchList.api.js";
 import { profileApi } from "@/redux/apis/profile.api.js";
 import { favoritesApi } from "@/redux/apis/favouriteApi.js";
 
-import { useMemo } from 'react';
+import { useMemo } from "react";
+import SlectedLanguage from "../SlectedLanguage/SlectedLanguage.js";
 export default function Header({ route }) {
   const router = useRouter();
   const authed = useSelector((state) => state?.auth?.authed);
@@ -90,8 +94,9 @@ export default function Header({ route }) {
   };
 
   const handleLogout = () => {
-    logoutQ().unwrap()
-      .then(res => {
+    logoutQ()
+      .unwrap()
+      .then((res) => {
         dispatch(authApi.util.resetApiState());
         dispatch(notificationApi.util.resetApiState());
         dispatch(chatApi.util.resetApiState());
@@ -102,10 +107,11 @@ export default function Header({ route }) {
         dispatch(favoritesApi.util.resetApiState());
         dispatch(favoritesApi.util.resetApiState());
         dispatch(setLogout());
-      }).catch(e => {
-        console.log(e);
       })
-  }
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   const menuId = "primary-search-account-menu";
   const countQuery = useGetUnreadCountQuery();
@@ -166,7 +172,9 @@ export default function Header({ route }) {
           <Link
             style={{ textDecoration: "none", color: "white" }}
             href="/auth"
-            onClick={() => { handleLogout() }}
+            onClick={() => {
+              handleLogout();
+            }}
           >
             <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
           </Link>
@@ -337,21 +345,23 @@ export default function Header({ route }) {
           <p>Partners</p>
         </Link>
       </MenuItem>
-      {authed && (<MenuItem onClick={handleMenuClose}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="primary"
-        >
-          <AddIcon fontSize={"15px"} />
-        </IconButton>
+      {authed && (
+        <MenuItem onClick={handleMenuClose}>
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="primary"
+          >
+            <AddIcon fontSize={"15px"} />
+          </IconButton>
 
-        <Link style={{ textDecoration: "none", color: "white" }} href="/c2c">
-          <p>Add</p>
-        </Link>
-      </MenuItem>)}
+          <Link style={{ textDecoration: "none", color: "white" }} href="/c2c">
+            <p>Add</p>
+          </Link>
+        </MenuItem>
+      )}
       {authed && (
         <MenuItem onClick={handleMenuClose}>
           <IconButton
@@ -367,7 +377,7 @@ export default function Header({ route }) {
             style={{ textDecoration: "none", color: "white" }}
             href="/auth"
             onClick={() => {
-              handleLogout()
+              handleLogout();
             }}
           >
             <p>Logout</p>
@@ -393,55 +403,80 @@ export default function Header({ route }) {
             </Link>
           </Box>
 
-          {!hidden && <Box
-            sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}
-          >
-            {authed && (
-              <Link
-                style={{ textDecoration: "none", color: "white" }}
-                href={"/c2c"}
-              >
-                <Fab
-                  size={"small"}
-                  style={{
-                    background: theme.palette.primary.main,
-                    width: 20,
-                    minHeight: 20,
-                    maxHeight: 20,
-                    marginRight: 15,
-                    marginBottom: 3,
-                  }}
-                  aria-label="add"
+          {!hidden && (
+            <Box
+              sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}
+            >
+              {authed && (
+                <Link
+                  style={{ textDecoration: "none", color: "white" }}
+                  href={"/c2c"}
                 >
-                  <AddIcon fontSize={"15px"} />
-                </Fab>
-              </Link>
-            )}
-            <Link
-              style={{ textDecoration: "none", color: "white" }}
-              href="/buisness"
-            >
-              <IconButton size="large" aria-label="Search" color="primary">
-                <ApartmentIcon />
-              </IconButton>
-            </Link>
-            <Link
-              style={{ textDecoration: "none", color: "white" }}
-              href="/search"
-            >
-              <IconButton size="large" aria-label="Search" color="primary">
-                <SearchIcon />
-              </IconButton>
-            </Link>
-            {authed && (
+                  <Fab
+                    size={"small"}
+                    style={{
+                      background: theme.palette.primary.main,
+                      width: 20,
+                      minHeight: 20,
+                      maxHeight: 20,
+                      marginRight: 15,
+                      marginBottom: 3,
+                    }}
+                    aria-label="add"
+                  >
+                    <AddIcon fontSize={"15px"} />
+                  </Fab>
+                </Link>
+              )}
               <Link
                 style={{ textDecoration: "none", color: "white" }}
-                href="/chat"
+                href="/buisness"
               >
+                <IconButton size="large" aria-label="Search" color="primary">
+                  <ApartmentIcon />
+                </IconButton>
+              </Link>
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                href="/search"
+              >
+                <IconButton size="large" aria-label="Search" color="primary">
+                  <SearchIcon />
+                </IconButton>
+              </Link>
+
+              <SlectedLanguage />
+              {authed && (
+                <Link
+                  style={{ textDecoration: "none", color: "white" }}
+                  href="/chat"
+                >
+                  <IconButton
+                    size="large"
+                    aria-label="show 4 new mails"
+                    color="primary"
+                  >
+                    <Badge
+                      sx={{
+                        "& .MuiBadge-standard": {
+                          color: "black",
+                        },
+                      }}
+                      badgeContent={getChatUnread?.data?.totalUnreadChats || 0}
+                      color="primary"
+                    >
+                      <MailIcon />
+                    </Badge>
+                  </IconButton>
+                </Link>
+              )}
+
+              {authed && (
                 <IconButton
                   size="large"
-                  aria-label="show 4 new mails"
+                  aria-label="show number of new notifications"
                   color="primary"
+                  onClick={handleNotificationClick}
                 >
                   <Badge
                     sx={{
@@ -449,62 +484,41 @@ export default function Header({ route }) {
                         color: "black",
                       },
                     }}
-                    badgeContent={getChatUnread?.data?.totalUnreadChats || 0}
+                    badgeContent={countQuery?.data?.unreadCount || 0}
                     color="primary"
                   >
-                    <MailIcon />
+                    <NotificationsIcon />
                   </Badge>
                 </IconButton>
-              </Link>
-            )}
-
-            {authed && (
+              )}
               <IconButton
                 size="large"
-                aria-label="show number of new notifications"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
                 color="primary"
-                onClick={handleNotificationClick}
               >
-                <Badge
-                  sx={{
-                    "& .MuiBadge-standard": {
-                      color: "black",
-                    },
-                  }}
-                  badgeContent={countQuery?.data?.unreadCount || 0}
-                  color="primary"
-                >
-                  <NotificationsIcon />
-                </Badge>
+                <AccountCircle />
               </IconButton>
-            )}
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="primary"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-          }
+            </Box>
+          )}
 
-          {!hidden && <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
-          }
+          {!hidden && (
+            <Box sx={{ display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </Box>
+          )}
         </Toolbar>
       </AppBar>
       {!hidden && renderMobileMenu}

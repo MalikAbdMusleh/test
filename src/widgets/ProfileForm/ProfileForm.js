@@ -37,6 +37,7 @@ const ProfileForm = ({
   getCountriesQuery,
   getRegionsQuery,
   getCitiesQuery,
+  handleInputChangeNumber,
 }) => {
   const imageRef = useRef(null);
   const [imageSrc, setImageSrc] = useState("/imgs/profpic.svg");
@@ -217,7 +218,7 @@ const ProfileForm = ({
                 <CustomInputNumber
                   value={profileData.mobile}
                   name={"mobile"}
-                  handleInputChange={handleInputChange}
+                  handleInputChange={handleInputChangeNumber}
                   label={"Mobile phone number"}
                   error={errors.mobile}
                   prefix="+966"

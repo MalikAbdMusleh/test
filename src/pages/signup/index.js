@@ -125,6 +125,9 @@ export default function Profile(props) {
   const handleInputChange = (e) => {
     setProfileData((state) => ({ ...state, [e.target.name]: e.target.value }));
   };
+  const handleInputChangeNumber = (e) => {
+    setProfileData((state) => ({ ...state, mobile: e.target.value }));
+  };
 
   const onChangeDate = (val) => {
     setProfileData((state) => ({
@@ -132,7 +135,7 @@ export default function Profile(props) {
       dateOfBirth: dayjs(val).format("YYYY-MM-DD"),
     }));
   };
-  // console.log(getCountriesQuery);
+  console.log(profileData);
   return (
     <>
       <CustomDialog
@@ -147,6 +150,7 @@ export default function Profile(props) {
         handleUpdate={handleSubmit}
         genderOptions={genderOptions}
         handleInputChange={handleInputChange}
+        handleInputChangeNumber={handleInputChangeNumber}
         sellerTypeOptions={sellerTypeOptions}
         eighteenAgo={eighteenAgo}
         errors={errors}

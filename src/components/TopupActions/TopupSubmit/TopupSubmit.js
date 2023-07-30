@@ -1,6 +1,12 @@
 import { Box, Button, Typography } from "@mui/material";
 
-const TopupSubmit = ({ isSubmitted, onClick, minimumBid, depositAmount }) => {
+const TopupSubmit = ({
+  isSubmitted,
+  onClick,
+  minimumBid,
+  depositAmount,
+  buttonDisabel,
+}) => {
   // console.log(isSubmitted);
   return (
     <Box
@@ -35,6 +41,7 @@ const TopupSubmit = ({ isSubmitted, onClick, minimumBid, depositAmount }) => {
         onClick={onClick}
         variant={isSubmitted ? "contained" : "outlined"}
         fullWidth
+        disabled={buttonDisabel}
         sx={{
           borderRadius: "16px",
           padding: "13px",

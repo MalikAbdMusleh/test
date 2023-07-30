@@ -14,13 +14,13 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const FeaturedProducts = ({ type, title, viewMore }) => {
   const carData = {
-    img: './imgs/mercedes.png',
-    heading: 'mercedes',
-    category: 'cars',
-    flag: 'jo',
-    description: '2015 Mercedes -Benz S-Class S350 BlueTec',
-    note: '10000 km'
-}
+    img: "./imgs/mercedes.png",
+    heading: "mercedes",
+    category: "cars",
+    flag: "jo",
+    description: "2015 Mercedes -Benz S-Class S350 BlueTec",
+    note: "10000 km",
+  };
   return (
     <>
       <Box
@@ -41,6 +41,7 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
       </Box>
 
       <Swiper
+        dir="ltr"
         // style={{ padding: "0rem 2rem" }}
         modules={[Grid]}
         className={`mySwiper margin-top`}
@@ -76,12 +77,14 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
       >
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
               title={title}
               data={{
-                
                 img: "/imgs/vc.png",
                 heading: "bmw",
                 category: "cars",
@@ -96,17 +99,19 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
                 tag: true,
                 description: "2005 BMW 5 Series 523i (e60)",
                 note: title === "UPCOMING LIVE AUCTIONS" ? "" : "4200 km",
-                
               }}
             ></ProductCardSmall>
           )}
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -128,10 +133,13 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -153,10 +161,13 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -178,10 +189,13 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -203,10 +217,13 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -228,10 +245,13 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -253,10 +273,13 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -278,10 +301,13 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -303,10 +329,13 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -328,10 +357,13 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -353,10 +385,13 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -378,10 +413,13 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
         </SwiperSlide>{" "}
         <SwiperSlide className={partnerStyles["width-auto"]}>
           {type === "main" ? (
-            <ProductCardMain {...carData} img={"/imgs/mercedes.png"}></ProductCardMain>
+            <ProductCardMain
+              {...carData}
+              img={"/imgs/mercedes.png"}
+            ></ProductCardMain>
           ) : (
             <ProductCardSmall
-            title={title}
+              title={title}
               data={{
                 img: "/imgs/vc.png",
                 heading: "bmw",
@@ -397,7 +435,7 @@ const FeaturedProducts = ({ type, title, viewMore }) => {
                 ),
                 description: "2005 BMW 5 Series 523i (e60)",
                 note: title === "UPCOMING LIVE AUCTIONS" ? "" : "4200 km",
-                fromPartener:true
+                fromPartener: true,
               }}
             ></ProductCardSmall>
           )}

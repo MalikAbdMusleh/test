@@ -15,9 +15,9 @@ export const themeOptions = {
       main: "#FFFFFF",
       dark: "#ba000d",
       contrastText: "#000",
-    }, 
+    },
     background: {
-      default: '#000000',
+      default: "#000000",
     },
   },
   components: {
