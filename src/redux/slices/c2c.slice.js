@@ -16,10 +16,14 @@ const initialState = {
         description: "",
         saleType: 'sale',
         sellerType: null,
-        companyRegNumber: "",
-        companyVatNumber: "",
+        commercialRegistration: "",
+        companyVatNo: "",
+        canAcceptOffers: false,
+        location: {},
         reservePrice: "",
         buyNowPrice: "",
+        title: '',
+        vehiclePrice: "",
         itemLocation: null
     },
     uploadedFiles: [],
@@ -60,10 +64,14 @@ export const c2cSlice = createSlice({
                 description: "",
                 saleType: 'sale',
                 sellerType: null,
-                companyRegNumber: "",
-                companyVatNumber: "",
+                commercialRegistration: "",
+                companyVatNo: "",
+                canAcceptOffers: false,
+                location: {},
                 reservePrice: "",
                 buyNowPrice: "",
+                title: '',
+                vehiclePrice: "",
                 itemLocation: null
             }
         }

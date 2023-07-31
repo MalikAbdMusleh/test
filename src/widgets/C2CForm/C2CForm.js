@@ -22,6 +22,7 @@ import RadioOffer from "./FormComponents/RadioOffer";
 
 const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
   const [models, setModels] = useState([]);
+  const [submited, setSubmited] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
   const handleContinue = () => {
@@ -33,7 +34,10 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
       alert("You must accept terms and conditions");
       return;
     }
-
+    if (!((formState.countryId && formState.regionId && formState.cityId) || formState.location.lat != undefined)) {
+      alert("You must Add your location or your full address ! ");
+      return;
+    }
     handleFormContinue(true);
   };
   const {
@@ -51,58 +55,53 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
   const [offerTC, setOfferTC] = useState(false);
   const [errors, setErrors] = useState({});
   const formValid = (values) => {
-    const filteredData = Object.fromEntries(
-      Object.entries(values).filter(([_, v]) => v)
-    );
-    const validationObj = {
-      vehiclePrice: "number",
-      reservedPrice: "number",
-      title: "required",
-    };
-    let validated = true;
-    Object.keys(validationObj).forEach((key, i) => {
-      if (validationObj[key] === "number" && filteredData[key]) {
-        if (!checkIfNumber(filteredData[key])) {
-          setErrors((prevState) => ({
-            ...prevState,
-            [key]: "Value must be a number",
-          }));
-          validated = validated && false;
-        } else {
-          setErrors((prevState) => ({ ...prevState, [key]: "" }));
-          validated = validated && true;
-        }
-      } else if (!filteredData[key]) {
-        if (catId !== "1" && !filteredData.title) {
-          setErrors((prevState) => ({
-            ...prevState,
-            title: "Field is required",
-          }));
-          validated = validated && false;
-        }
-        if (
-          filteredData.saleType === "auction" &&
-          !filteredData.reservedPrice
-        ) {
-          // setErrors((prevState) => ({
-          //   ...prevState,
-          //   reservedPrice: "Field is required",
-          // }));
-          validated = validated && true;
-        }
-        if (filteredData.saleType === "sale" && !filteredData.vehiclePrice) {
-          setErrors((prevState) => ({
-            ...prevState,
-            vehiclePrice: "Field is required",
-          }));
-          validated = validated && false;
-        }
-      } else {
-        setErrors((prevState) => ({ ...prevState, [key]: "" }));
-        validated = validated && true;
+    setSubmited(true)
+    // check if all the required fields are filled start
+    //for cars
+    if (catId == '1') {
+      if (!((formState.make &&
+        formState.model &&
+        formState.km &&
+        formState.fuelType &&
+        formState.transmission &&
+        formState.interiorColor &&
+        formState.exteriorColor &&
+        formState.condition &&
+        formState.vehiclePrice &&
+        formState.description &&
+        formState.cylinders))) {
+        return;
       }
-    });
-    return validated;
+    }
+    //for the rest of the categories
+    if (catId != '1') {
+      if (!(
+        formState.vehiclePrice &&
+        formState.description &&
+        formState.title &&
+        formState.sellerType)) {
+        return false;
+      }
+    }
+
+    if (formState.saleType == "auction") {
+      if (!formState.reservePrice) {
+        return false;
+      }
+    }
+    if (formState.sellerType == "companyWithVat" || formState.sellerType == "governmentOrganisation") {
+      if (!formState.commercialRegistration || !formState.commercialRegistration) {
+        return false
+      }
+    }
+    if (formState.sellerType == "companyNoVat") {
+      if (!formState.commercialRegistration) {
+        return false
+      }
+    }
+
+    // check if all the required fields are filled end
+    return true ;
   };
 
   detailsFields.map((field) => {
@@ -231,6 +230,8 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
                       value: condition.id,
                     }))}
                   />
+                  {!formState.condition && <p class="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained muiltr-12bxhpu-MuiFormHelperText-root" id=":rf:-helper-text">required</p>}
+
                 </Grid>
               </Grid>
             </>
@@ -242,8 +243,8 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
               onChange={(e) =>
                 dispatch(setFormState({ title: e.target.value }))
               }
-              error={errors.title}
-              helperText={errors.title}
+              error={formState.title == ''}
+              helperText={formState.title == '' ? 'Field is required' : ''}
             />
           )}
 
@@ -261,7 +262,12 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
             saleType={formState.saleType}
             handleSaleTypeChange={(payload) => handleSaletypeChange(payload)}
           />
-          <RadioOffer errors={errors} offer={offerTC} setoffer={setOfferTC} />
+          <RadioOffer errors={errors} offer={offerTC} setoffer={setOfferTC} formState={formState}
+
+
+            setValue={(payload) => dispatch(setFormState(payload))}
+
+          />
           <Grid
             item
             padding={{ sm: 3 }}
@@ -281,8 +287,15 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
                 val: condition.id,
               }))}
             />
+            {!formState.sellerType && <p class="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained muiltr-12bxhpu-MuiFormHelperText-root" id=":rf:-helper-text">
+              Select Your Seller Type</p>}
           </Grid>
-          {formState.sellerType === "companyWithVat" && <CompanyInfo />}
+          {(formState.sellerType === "companyWithVat" ||
+            formState.sellerType === "governmentOrganisation" ||
+            formState.sellerType === "companyNoVat")
+            && <CompanyInfo formState={formState}
+              setValue={(payload) => dispatch(setFormState(payload))}
+            />}
           {formState.saleType === "sale" && (
             <SaleInformation
               setFormState={(payload) => dispatch(setFormState(payload))}
@@ -299,6 +312,7 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
           )}
           <ItemLocation
             value={formState.itemLocation}
+            formState={formState.itemLocation}
             setValue={(payload) => {
               dispatch(setFormState(payload));
             }}
@@ -312,6 +326,8 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
             setRead={setReadTC}
           />
         </Grid>
+        {submited && <p class="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained muiltr-12bxhpu-MuiFormHelperText-root" id=":rf:-helper-text">Please complete all required fields first</p>}
+
         <Button
           variant="outlined"
           style={{ width: "100%" }}

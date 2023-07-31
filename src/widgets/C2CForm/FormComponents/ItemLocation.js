@@ -15,12 +15,17 @@ const ItemLocation = ({
   country,
   regionState,
   city,
+  formState
 }) => {
   const libraries = useMemo(() => ["places"], []);
   const [lat, setLat] = useState(value?.lat || 24.7136);
   const [lng, setLng] = useState(value?.lng || 46.6753);
   const [isLocationSelected, setLocation] = useState(false);
-
+  const [isCountrySelected, setIsCountrySelected] = useState(false);
+  const [isRegionStateSelected, setIsRegionStateSelected] = useState(false);
+  const [isCitySelected, setIsCitySelected] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(value);
+  
   const [geoLocaotion, setGeoLocation] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -98,7 +103,16 @@ const ItemLocation = ({
     const { name, value } = target;
     setValue({ [name]: value, location: {} });
     setGeoLocation("");
-  };
+    if (name=='countryId') {
+      setValue({ regionId: '',cityId: '', location: {} });
+      setSelectedValue((prevState)=>{return {...prevState, [name]: value,regionId: '',cityId: '', location: {} }})
+     } else if (name=='regionId') {
+      setValue({  cityId: '', location: {} });
+      setSelectedValue((prevState)=>{return {...prevState, [name]: value,cityId: '', location: {} }})
+     } else {
+      
+     }
+    };
   return (
     <Grid item padding={{ sm: 3 }} py={{ xs: 3, sm: 0 }} width={"100%"}>
       <Grid container width={"100%"}>
@@ -124,6 +138,7 @@ const ItemLocation = ({
                     </MenuItem>
                   ))}
               </Select>
+              {!country && <p class="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained muiltr-12bxhpu-MuiFormHelperText-root" id=":rf:-helper-text">Select Your Country Or Use The Map Below</p>}
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <InputLabel>Region</InputLabel>
@@ -143,6 +158,10 @@ const ItemLocation = ({
                     </MenuItem>
                   ))}
               </Select>
+              {!regionState?
+               <p class="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained muiltr-12bxhpu-MuiFormHelperText-root" id=":rf:-helper-text">
+                Select Your Region Or Use The Map Below</p>:''}
+
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <InputLabel>City</InputLabel>
@@ -154,6 +173,7 @@ const ItemLocation = ({
                 onChange={handleInputChange}
                 disabled={!cities?.length}
                 value={city}
+                
               >
                 {cities &&
                   cities.map((city) => (
@@ -162,6 +182,8 @@ const ItemLocation = ({
                     </MenuItem>
                   ))}
               </Select>
+              {!city && <p class="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained muiltr-12bxhpu-MuiFormHelperText-root" id=":rf:-helper-text">Select Your City Or Use The Map Below</p>}
+
             </Grid>
           </Grid>
         </Grid>

@@ -3,8 +3,15 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import IOSSwitch from "@/components/IOSSwitch/IOSSwitch";
 import WarningParagraph from "./WarningParagraph";
+import React, { useState } from "react";
 
-function RadioOffer({ offer, setoffer, errors }) {
+function RadioOffer({ offer, setoffer, errors, setValue, formState }) {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleInputChange = ({ target }) => {
+    const { name, value } = target;
+    setValue({ [name]: value });
+  };
   return (
     <Grid item padding={{ sm: 3 }}>
       <Grid container flexDirection={"column"}>
@@ -24,8 +31,8 @@ function RadioOffer({ offer, setoffer, errors }) {
             <FormControlLabel
               control={
                 <IOSSwitch
-                  onChange={(e) => setoffer(e.target.checked)}
-                  checked={offer}
+                  onChange={(e) =>{ setValue({ canAcceptOffers: !isChecked});setIsChecked(!isChecked)}}
+                   checked={isChecked}
                   sx={{ m: 1 }}
                 />
               }

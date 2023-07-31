@@ -80,7 +80,7 @@ const C2CCategory = ({
         getValue: (value) => value?.id,
       },
       { key: "year", newKey: "vehicleYear", getValue: (value) => value?.id },
-      { key: "companyVatNumber", newKey: "companyVatNo" },
+      { key: "companyVatNo", newKey: "companyVatNo" },
       {
         key: "exteriorColor",
         newKey: "vehicleColor",
@@ -123,13 +123,14 @@ const C2CCategory = ({
     });
     if (formState.saleType === "auction" && !formDataApi["reservedPrice"])
       if (formState.saleType === "sale" && !formDataApi["vehiclePrice"])
-        // return alert("please fill vehicle price");
-
         return alert("please fill vehicle price");
 
     formDataApi.auctionVehicleTypeId = categoryId;
+
+    formDataApi.title = formState.title ? formState.title : 'no title';
     const accessToken = cookieCutter.get("accessToken");
     const headers = { Authorization: `Bearer ${accessToken}` };
+    console.log('fetch start formDataApi', formDataApi)
 
     await fetchApi(
       {
@@ -140,6 +141,7 @@ const C2CCategory = ({
       },
       true
     );
+    console.log('fetch end')
   };
 
   const storeInspectionReport = async () => {

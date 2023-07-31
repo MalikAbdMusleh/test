@@ -12,7 +12,10 @@ const C2CDescription = ({ description, setFormState }) => {
                 This is optional, however, the auction with a proper description usually attracts more potential buyers.
             </Typography>
             <TextField
-                value={description}
+                error={!description}
+                helperText={description == ''?'Field is required':''}
+
+                 value={description}
                 placeholder="Description"
                 multiline
                 rows={10}

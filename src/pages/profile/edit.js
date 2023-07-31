@@ -50,8 +50,8 @@ export default function NewProfile(props) {
         cityId: '',
         occupation: '',
         seller: '',
-        companyRegNumber: '',
-        companyVATNumber: '',
+        commercialRegistration: '',
+        companyVatNo: '',
     });
     const [imageSrc, setImageSrc] = useState("/imgs/profpic.svg");
     const [openPopover, setOpenPopover] = useState(null);
@@ -141,8 +141,8 @@ export default function NewProfile(props) {
                 state: profileState.state,
                 cityId: profileState.cityId,
                 occupation: profileState.occupation,
-                companyRegNumber: profileState.companyRegNumber,
-                companyVATNumber: profileState.companyVATNumber,
+                commercialRegistration: profileState.commercialRegistration,
+                companyVatNo: profileState.companyVatNo,
             }).unwrap()
                 .then(res => {
                     router.replace('/profile')
@@ -415,10 +415,10 @@ export default function NewProfile(props) {
                             <TextField
                                 sx={{ width: '100%' }}
                                 onChange={handleInputChange}
-                                name="companyVATNumber"
+                                name="companyVatNo"
                                 label="Company VAT Number"
                                 variant="outlined"
-                                value={profileState.companyVATNumber}
+                                value={profileState.companyVatNo}
                             />
                         )}
                     </Grid>
@@ -428,10 +428,10 @@ export default function NewProfile(props) {
                             <TextField
                                 sx={{ width: '100%' }}
                                 onChange={handleInputChange}
-                                name="companyRegNumber"
+                                name="commercialRegistration"
                                 label="Company Registration Number"
                                 variant="outlined"
-                                value={profileState.companyRegNumber}
+                                value={profileState.commercialRegistration}
                             />
                         )}
                     </Grid>

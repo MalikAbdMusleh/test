@@ -20,45 +20,51 @@ export default function CustomAutocomplete({
     setValue({ [name]: val });
   };
   return (
-    <Autocomplete
-      {...rest}
-      fullWidth
-      options={
-        name === "year"
-          ? Object.values(
+    <div className="muiltr-102thmx-MuiAutocomplete-root">
+      <Autocomplete
+        {...rest}
+        error={!value}
+        helperText={value == '' ? 'Field is required' : ''}
+        fullWidth
+        options={
+          name === "year"
+            ? Object.values(
               data.reduce((acc, obj) => {
                 acc["" + obj.id] = obj;
                 return acc;
               }, {})
             ).reverse()
-          : Object.values(
+            : Object.values(
               data.reduce((acc, obj) => {
                 acc["" + obj.id] = obj;
                 return acc;
               }, {})
             )
-      }
-      getOptionLabel={(option) => option.label || option.name}
-      id="controlled-autocomplete"
-      value={value}
-      onChange={async (event, newValue) => {
-        if (name == "make") {
-          const makeId = newValue?.id;
-          const makeModels = await fetchApi(
-            { url: `vehicle-makes/${makeId}` },
-            true
-          );
-          const modelsArray = makeModels?.vehicleModels;
-          const modelData = modelsArray.map((option) => {
-            return { id: option.id, name: option.name, label: option.name };
-          });
-          setModels(modelData);
         }
-        handleChange(newValue);
-      }}
-      renderInput={(params) => (
-        <TextField {...params} label={label} variant="standard" />
-      )}
-    />
+        getOptionLabel={(option) => option.label || option.name}
+        id="controlled-autocomplete"
+        value={value}
+        onChange={async (event, newValue) => {
+          if (name == "make") {
+            const makeId = newValue?.id;
+            const makeModels = await fetchApi(
+              { url: `vehicle-makes/${makeId}` },
+              true
+            );
+            const modelsArray = makeModels?.vehicleModels;
+            const modelData = modelsArray.map((option) => {
+              return { id: option.id, name: option.name, label: option.name };
+            });
+            setModels(modelData);
+          }
+          handleChange(newValue);
+        }}
+        renderInput={(params) => (
+          <TextField {...params} label={label} variant="standard" />
+        )}
+      />
+      {!value && <p class="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained muiltr-12bxhpu-MuiFormHelperText-root" id=":rf:-helper-text">Field is required</p>}
+
+    </div>
   );
 }
