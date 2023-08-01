@@ -10,7 +10,7 @@ export default function handler(req, res) {
   };
 
   fetch(
-    `${process.env.API_BASE_URL}/favourites/${req.body.auctionId}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/favourites/${req.body.auctionId}`,
     requestOptions,
   )
     .then((response) => {

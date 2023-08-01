@@ -9,7 +9,7 @@ export default function handler(req, res) {
     };
 
     fetch(
-      `${process.env.API_BASE_URL}/vehicle-models/${req.params.id}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/vehicle-models/${req.params.id}`,
       requestOptions
     )
       .then((response) => response.text())
@@ -28,7 +28,7 @@ export default function handler(req, res) {
       redirect: "follow",
     };
 
-    fetch(`${process.env.API_BASE_URL}/vehicle-models`, requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/vehicle-models`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         const response = JSON.parse(result);

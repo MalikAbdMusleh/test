@@ -11,7 +11,7 @@ export default function handler(req, res) {
     redirect: "follow",
   };
 
-  fetch(`${process.env.API_BASE_URL}/logout`, requestOptions)
+  fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/logout`, requestOptions)
     .then((response) => response.text())
     .then((result) => res.status(200).json(result))
     .catch((error) => console.log("error", error));

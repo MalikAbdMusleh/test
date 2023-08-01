@@ -11,7 +11,7 @@ export default function handler(req, res) {
 
    
     fetch(
-      `${process.env.API_BASE_URL}/auction-vehicles/preview-buy-now?auctionVehicleId=${req?.query?.auctionVehicleId}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auction-vehicles/preview-buy-now?auctionVehicleId=${req?.query?.auctionVehicleId}`,
       requestOptions
     )
       .then((response) => response.text())

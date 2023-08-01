@@ -18,7 +18,7 @@ export default function handler(req, res) {
     if (req.method === 'POST')
         requestOptions.body = raw
     const stringParams = new URLSearchParams(req.query).toString();
-    fetch(`${process.env.API_BASE_URL}${req.headers.path}?${stringParams}`, requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${req.headers.path}?${stringParams}`, requestOptions)
         .then((response) => {
             res.status(response.status)
             return response.text()

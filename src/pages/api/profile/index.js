@@ -9,7 +9,7 @@ export default function handler(req, res) {
   };
   console.log(requestOptions);
   const stringParams = new URLSearchParams(req.query).toString();
-  fetch(`${process.env.API_BASE_URL}/profile?${stringParams}`, requestOptions)
+  fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/profile?${stringParams}`, requestOptions)
     .then((response) => {
       res.status(response.status)
       return response.text()

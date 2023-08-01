@@ -8,7 +8,7 @@ export default function handler(req, res) {
     redirect: "follow",
   };
   fetch(
-    `${process.env.API_BASE_URL}/vehicle-makes/${req?.query?.id}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/vehicle-makes/${req?.query?.id}`,
     requestOptions
   )
     .then((response) => response.text())

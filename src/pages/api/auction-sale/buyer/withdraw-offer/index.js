@@ -10,7 +10,7 @@ export default function handler(req, res) {
   };
 
   fetch(
-    `${process.env.API_BASE_URL}/auction-vehicles/sale/buyer/withdraw-offer`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auction-vehicles/sale/buyer/withdraw-offer`,
     requestOptions
   )
     .then((response) => {

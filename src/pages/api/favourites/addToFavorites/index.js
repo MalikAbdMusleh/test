@@ -14,7 +14,7 @@ export default function handler(req, res) {
     body: raw,
     redirect: 'follow'
   };
-  fetch(`${process.env.API_BASE_URL}/favourites`, requestOptions)
+  fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/favourites`, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const response = JSON.parse(result)

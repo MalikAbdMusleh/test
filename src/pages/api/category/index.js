@@ -6,8 +6,8 @@ export default function handler(req, res) {
         headers: myHeaders,
         redirect: 'follow'
     };
-    console.log(`${process.env.API_BASE_URL}${req.headers.path}`);
-    fetch(`${process.env.API_BASE_URL}${req.headers.path}`, requestOptions)
+    console.log(`${process.env.NEXT_PUBLIC_API_BASE_URL}${req.headers.path}`);
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${req.headers.path}`, requestOptions)
         .then((response) => {
             res.status(response.status)
             return response.text()

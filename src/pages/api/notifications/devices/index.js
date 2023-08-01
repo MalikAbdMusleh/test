@@ -17,7 +17,7 @@ export default function handler(req, res) {
       body: urlencoded,
     }
 
-    fetch(`${process.env.API_BASE_URL}/notifications/devices`, requestOptions)
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/notifications/devices`, requestOptions)
       .then((response) => {
         res.status(response.status)
         return response.text()
@@ -37,7 +37,7 @@ export default function handler(req, res) {
     }
 
     fetch(
-      `${process.env.API_BASE_URL}/notifications/devices/${id}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/notifications/devices/${id}`,
       requestOptions,
     )
       .then((response) => response.text())

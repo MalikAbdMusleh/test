@@ -12,7 +12,7 @@ export default function handler(req, res) {
   };
 
   fetch(
-    `${process.env.API_BASE_URL}/reset-password?email=${body.email}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/reset-password?email=${body.email}`,
     requestOptions
   )
     .then((response) => response.text())

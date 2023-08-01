@@ -15,7 +15,7 @@ export default function handler(req, res) {
     redirect: "follow",
   };
 
-  fetch(`${process.env.API_BASE_URL}/login`, requestOptions)
+  fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/login`, requestOptions)
     .then((response) => {
       res.status(response.status)
       return response.text()

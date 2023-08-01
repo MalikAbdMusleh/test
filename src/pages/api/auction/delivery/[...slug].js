@@ -7,7 +7,7 @@ export default function handler(req, res) {
     redirect: "follow",
   };
 
-  fetch(`${process.env.API_BASE_URL}/location/countries`, requestOptions)
+  fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/location/countries`, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const response = JSON.parse(result);

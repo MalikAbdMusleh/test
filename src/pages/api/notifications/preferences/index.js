@@ -28,7 +28,7 @@ export default function handler(req, res) {
 
   }
 
-  fetch(`${process.env.API_BASE_URL}/notifications/preferences`, requestOptions)
+  fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/notifications/preferences`, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const response = JSON.parse(result)

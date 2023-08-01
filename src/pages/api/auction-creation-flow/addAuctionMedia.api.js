@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         redirect: 'follow'
       };
   
-      const url = `${process.env.API_BASE_URL}/auction-vehicles/${auctionVehicleId}/upload-media`;
+      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/auction-vehicles/${auctionVehicleId}/upload-media`;
       const response = await fetch(url, requestOptions);
       const data = await response.json();
   

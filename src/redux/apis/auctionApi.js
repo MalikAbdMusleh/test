@@ -4,7 +4,7 @@ import { HYDRATE } from "next-redux-wrapper";
 export const auctionApi = createApi({
   reducerPath: 'auctionApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
+    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       const accessToken = getState()?.auth?.token?.accessToken;
       if (accessToken) {
@@ -30,11 +30,48 @@ export const auctionApi = createApi({
     getAuctionBySellerId: builder.query({
       query: (arg) => {
         return {
-          url: `auction/seller?seller=${arg.sellerId}&page=1&type=active&saleType=all`
+          url: `auction-vehicles?seller=${arg.sellerId}&type=active&saleType=auction`
         };
       },
     }),
 
+    getPendingAuctionBySellerId: builder.query({
+      query: (arg) => {
+        return {  
+          url: `auction-vehicles?seller=${arg.sellerId}&type=new&saleType=auction`
+        };
+      },
+    }),
+    getEndedAuctionBySellerId: builder.query({
+      query: (arg) => {
+        return {
+          url: `auction-vehicles?seller=${arg.sellerId}&type=ended&saleType=auction`
+        };
+      },
+    }),
+
+    getActiveSallerBySellerId: builder.query({
+      query: (arg) => {
+        return {
+          url: `auction-vehicles?seller=${arg.sellerId}&type=active&saleType=sale`
+        };
+      },
+    }),
+
+    getPendingSallerBySellerId: builder.query({
+      query: (arg) => {
+        return {  
+          url: `auction-vehicles?seller=${arg.sellerId}&type=new&saleType=sale`
+        };
+      },
+    }),
+    getEndedSallerBySellerId: builder.query({
+      query: (arg) => {
+        return {
+          url: `auction-vehicles?seller=${arg.sellerId}&type=ended&saleType=sale`
+        };
+      },
+    }),
     getAuctionHighestBid: builder.query({
       query: ({ auctionVehicleId }) => {
         return {
@@ -81,6 +118,11 @@ export const auctionApi = createApi({
 export const {
   useGetAuctionDetailsbyIDQuery,
   useGetAuctionBySellerIdQuery,
+  useGetPendingAuctionBySellerIdQuery,
+  useGetEndedAuctionBySellerIdQuery,
+  useGetActiveSallerBySellerIdQuery,
+  useGetEndedSallerBySellerIdQuery,
+  useGetPendingSallerBySellerIdQuery,
   useGetAuctionHighestBidQuery,
   useGetAuctionTimeRemainingQuery,
   useGetAuctionCountByTypeIdQuery,

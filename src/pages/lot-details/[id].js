@@ -133,18 +133,21 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
-
+  const [seconds, setSeconds] = useState(0);
+ 
+var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
   const getTime = () => {
-    setDays(
-      Math.floor(auctionDetails?.timeRemaining.secondsLeft / (60 * 60 * 24))
-    );
-    setHours(
-      Math.floor((auctionDetails?.timeRemaining.secondsLeft / (60 * 60)) % 24)
-    );
-    setMinutes(
-      Math.floor((auctionDetails?.timeRemaining.secondsLeft / 60) % 60)
-    );
+       secondsLeft--
+      setDays(Math.floor(secondsLeft / (1 * 60 * 60 * 24)));
+      setHours(Math.floor((secondsLeft / (1 * 60 * 60)) % 24));
+      setMinutes(Math.floor((secondsLeft / 1 / 60) % 60));
+      setSeconds(Math.floor((secondsLeft / 1) % 60));
   };
+
+  useEffect(() => {
+      const interval = setInterval(() => getTime(), 1000);
+      return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     getTime();
@@ -359,19 +362,18 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
       })
         .unwrap()
         .then((res) => {
-          console.log(res);
-          window.location.reload();
+           window.location.reload();
         })
         .catch((e) => {});
     } else setOpenCardsModal(true);
   };
 
   const [counterOfferAmount, setCounterOfferAmount] = useState("");
-  const renderOffers = getOffersQ?.data?.map((el, i) => {
+  const renderOffers = getOffersQ?.data?.length>0? (getOffersQ?.data?.map((el, i) => {
     return (
       <Box
         key={i}
-        sx={{ padding: 2, borderRadius: 3, background: "rgb(35, 35, 35)" }}
+        sx={{ padding: 2, borderRadius: 3, background: "rgb(0, 0, 0) !important" }}
       >
         <Typography>
           Auction ID: &nbsp;
@@ -420,7 +422,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
         )}
       </Box>
     );
-  });
+  })):[];
 
   return (
     <>
@@ -491,6 +493,11 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
                       </Grid>
                     </Grid>
                     <Grid item py={2}>
+                    <Grid item my={2} xs={12}>
+                      <Typography fontWeight={700} fontSize={22}>
+                      Description
+                      </Typography>
+                    </Grid>
                       <Typography
                         fontWeight={400}
                         fontSize={14}
@@ -593,15 +600,20 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
                     flexDirection={"column"}
                     justifyContent={"space-between"}
                   >
-                    {auctionDetails?.saleType === "auction" && (
+                    { (
                       <>
-                        <Grid item>
+                        <Grid justifyContent={'center'} alignItems={'center'} textAlign={"center"} >
+                               
+                      <Typography fontWeight={700} fontSize={22 }textAlign={"center"}>
+                        Ending In 
+                      </Typography>
+                   
                           <Typography
                             textAlign={"center"}
                             fontWeight={700}
                             fontSize={26}
                           >
-                            {days}D : {hours}H : {minutes}M
+                            {days}D : {hours}H : {minutes}M  
                           </Typography>
                         </Grid>
                         <Divider sx={{ margin: "10px 0" }} />
@@ -901,6 +913,9 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
               >
                 {renderOffers}
               </SliderBlock>
+              {renderOffers?.length<1&&<div style={{display:'flex',justifyContent:"center",alignItems:"center",width:"100vw"}}>
+                You don't have an offers yet ! 
+                </div>}
             </Grid>
           )}
           <Snackbar

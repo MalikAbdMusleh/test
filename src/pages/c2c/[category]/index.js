@@ -127,7 +127,7 @@ const C2CCategory = ({
 
     formDataApi.auctionVehicleTypeId = categoryId;
 
-    formDataApi.title = formState.title ? formState.title : 'no title';
+    formState.title ? formState.title : delete formDataApi.title;
     const accessToken = cookieCutter.get("accessToken");
     const headers = { Authorization: `Bearer ${accessToken}` };
     console.log('fetch start formDataApi', formDataApi)

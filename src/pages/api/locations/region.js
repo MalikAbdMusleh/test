@@ -17,7 +17,7 @@ export default function handler(req, res) {
   };
 
   fetch(
-    `${process.env.API_BASE_URL}/location/regions?countryId=${countryId}`, requestOptions)
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/location/regions?countryId=${countryId}`, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const response = JSON.parse(result);

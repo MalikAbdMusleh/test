@@ -12,7 +12,7 @@ function a11yProps(index) {
 
 export default function BasicTabs({ tabs, value, setValue }) {
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+     setValue(newValue);
   };
 
   return (
@@ -42,7 +42,6 @@ export default function BasicTabs({ tabs, value, setValue }) {
                   color: "white",
                   fontWeight: 900,
                   fontSize: 14,
-                  
                   ...(tab.isActive && {
                     "&.Mui-selected": {
                       padding: 0,

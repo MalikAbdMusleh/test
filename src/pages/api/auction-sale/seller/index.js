@@ -9,9 +9,9 @@ export default function handler(req, res) {
     redirect: "follow",
   };
   console.log(requestOptions);
-  console.log(`${process.env.API_BASE_URL}/auction-vehicles/sale/seller${req.headers.path}`);
+  console.log(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auction-vehicles/sale/seller${req.headers.path}`);
   fetch(
-    `${process.env.API_BASE_URL}/auction-vehicles/sale/seller${req.headers.path}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auction-vehicles/sale/seller${req.headers.path}`,
     requestOptions
   )
     .then((response) => {

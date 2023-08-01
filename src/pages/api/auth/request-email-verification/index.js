@@ -18,7 +18,7 @@ export default function handler(req, res) {
   };
 
   fetch(
-    `${process.env.API_BASE_URL}/user/request-email-verification`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/user/request-email-verification`,
     requestOptions
   )
     .then((response) => response.text())

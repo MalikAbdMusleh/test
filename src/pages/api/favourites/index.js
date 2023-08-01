@@ -8,7 +8,7 @@ export default function handler(req, res) {
   }
 
   fetch(
-    `${process.env.API_BASE_URL}/favourites?isActive=1`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/favourites?isActive=1`,
     requestOptions,
   )
     .then((response) => {

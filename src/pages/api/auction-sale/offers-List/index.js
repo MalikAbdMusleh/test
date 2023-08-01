@@ -9,7 +9,7 @@ export default function handler(req, res) {
 
   const stringParams = new URLSearchParams(req.query).toString();
   fetch(
-    `${process.env.API_BASE_URL}/auction-vehicles/offers/list?${stringParams}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/auction-vehicles/offers/list?${stringParams}`,
     requestOptions
   )
     .then((response) => response.text())

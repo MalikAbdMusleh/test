@@ -9,7 +9,7 @@ export default function handler(req, res) {
       redirect: "follow",
     };
     fetch(
-      `${process.env.API_BASE_URL}/vehicle-makes?onlyActive=${req.query.onlyActive}&sortBy=${req.query.sortBy}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/vehicle-makes?onlyActive=${req.query.onlyActive}&sortBy=${req.query.sortBy}`,
       requestOptions
     )
       .then((response) => response.text())
@@ -28,7 +28,7 @@ export default function handler(req, res) {
     };
 
     fetch(
-      `${process.env.API_BASE_URL}/vehicle-makes/${req?.params?.id}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/vehicle-makes/${req?.params?.id}`,
       requestOptions
     )
       .then((response) => response.text())

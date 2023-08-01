@@ -71,6 +71,7 @@ export default function MyActivityItem({
             mobileWidth={100}
             mobileHeight={100}
           />
+           
         </Grid>
       </Link>
     </Grid>

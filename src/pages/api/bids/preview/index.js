@@ -8,7 +8,7 @@ export default function handler(req, res) {
   }
 
   fetch(
-    `${process.env.API_BASE_URL}/bids/preview?auctionVehicleId=${req.query.auctionVehicleId}&amount=${req.query.amount}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/bids/preview?auctionVehicleId=${req.query.auctionVehicleId}&amount=${req.query.amount}`,
     requestOptions,
   )
     .then((response) => response.text())

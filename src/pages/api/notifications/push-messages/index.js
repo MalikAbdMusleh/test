@@ -19,9 +19,9 @@ export default function handler(req, res) {
       body: urlencoded,
       redirect: 'follow'
     };
-    console.log('NOT URL', `${process.env.API_BASE_URL}/notifications/push-messages/${messageId}`);
+    console.log('NOT URL', `${process.env.NEXT_PUBLIC_API_BASE_URL}/notifications/push-messages/${messageId}`);
     fetch(
-      `${process.env.API_BASE_URL}/notifications/push-messages/${messageId}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/notifications/push-messages/${messageId}`,
       requestOptions,
     )
       .then((response) => response.text())
@@ -41,7 +41,7 @@ export default function handler(req, res) {
     }
 
     fetch(
-      `${process.env.API_BASE_URL}/notifications/push-messages`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/notifications/push-messages`,
       requestOptions,
     )
       .then((response) => response.text())

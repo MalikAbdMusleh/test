@@ -11,7 +11,7 @@ const CardFooter = ({vehiclePrice, analytics, totalBids}) => {
                         <ShoppingCartIcon sx={{color: 'white', marginRight: 1, fontSize: 20}}/>
                     </Grid>
                     <Grid item>
-                        <Typography color={'white'} fontSize={14} fontWeight={'bold'}>{vehiclePrice.currency.code} {vehiclePrice.amount}</Typography>
+                        <Typography color={'white'} fontSize={14} fontWeight={'bold'}>{vehiclePrice?.currency.code} {vehiclePrice?.amount}</Typography>
                     </Grid>
                 </Grid>
             </Grid>

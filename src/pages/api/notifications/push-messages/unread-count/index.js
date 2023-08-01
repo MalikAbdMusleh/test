@@ -9,7 +9,7 @@ export default function handler(req, res) {
   }
 
   fetch(
-    `${process.env.API_BASE_URL}/notifications/push-messages/unread-count`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/notifications/push-messages/unread-count`,
     requestOptions,
   )
     .then((response) => response.text())

@@ -11,7 +11,7 @@ export default function handler(req, res) {
     }
 
     fetch(
-      `${process.env.API_BASE_URL}/bids?auctionVehicleId=${req.query.auctionVehicleId}&auctionedPrice=${req.query.auctionedPrice}&hasMaxBid=${req.query.hasMaxBid}&maxBidAmount=${req.query.maxBidAmount}&currencyCode=${req.query.currencyCode}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/bids?auctionVehicleId=${req.query.auctionVehicleId}&auctionedPrice=${req.query.auctionedPrice}&hasMaxBid=${req.query.hasMaxBid}&maxBidAmount=${req.query.maxBidAmount}&currencyCode=${req.query.currencyCode}`,
       requestOptions,
     )
       .then((response) => {
@@ -34,7 +34,7 @@ export default function handler(req, res) {
     }
 
     fetch(
-      `${process.env.API_BASE_URL}/bids?auctionVehicleId=${req.query.auctionVehicleId}&auctionedPrice=${req.query.auctionedPrice}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/bids?auctionVehicleId=${req.query.auctionVehicleId}&auctionedPrice=${req.query.auctionedPrice}`,
       requestOptions,
     )
       .then((response) => {

@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   };
 
   const api = axios.create({
-    baseURL: process.env.API_BASE_URL || "",
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "",
   });
   const endpoint = `/auction-vehicles/search-by-lot/${req?.query?.id}?currencyCode=SAR`;
   const config = {
