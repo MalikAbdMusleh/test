@@ -44,32 +44,10 @@ const C2CCategory = ({
     return acc;
   }, {});
 
-  const upload = async (e) => {
-    e.preventDefault();
+  const continueForm = async (e) => {
     setEditMode(true);
-
-    await Promise.all(
-      file.map(async (blobFileUrl, i) => {
-        if (!blobFileUrl.startsWith("blob")) return;
-        const response = await fetch(blobFileUrl);
-        const blobFile = await response.blob();
-
-        const formData = new FormData();
-        formData.append("mediaPhoto", blobFile, `image${i}.png`);
-        const accessToken = cookieCutter.get("accessToken");
-        const headers = { Authorization: `Bearer ${accessToken}` };
-        return fetchApi(
-          {
-            url: `auction-vehicles/${auctionId}/upload-media`,
-            method: "POST",
-            data: formData,
-            headers,
-          },
-          true
-        );
-      })
-    );
   };
+
   const onCreatAuction = async () => {
     let formDataApi = {};
     const mappings = [
@@ -130,7 +108,6 @@ const C2CCategory = ({
     formState.title ? formState.title : delete formDataApi.title;
     const accessToken = cookieCutter.get("accessToken");
     const headers = { Authorization: `Bearer ${accessToken}` };
-    console.log('fetch start formDataApi', formDataApi)
 
     await fetchApi(
       {
@@ -141,7 +118,6 @@ const C2CCategory = ({
       },
       true
     );
-    console.log('fetch end')
   };
 
   const storeInspectionReport = async () => {
@@ -260,13 +236,20 @@ const C2CCategory = ({
                   setFile={setFile}
                   upload={UploadFile}
                   imageMapping={imageMapper}
+                  categoryId={categoryId}
+                  auctionId={auctionId}
+                  auctionDetails={auctionDetails}
+                  vehicleMakes={vehicleMakes}
+                  locations={locations}
+
+                  
                 />
               </Box>
             </Grid>
             {file.length > 0 && (
               <Grid xs={12} item textAlign={"center"}>
                 <Button
-                  onClick={upload}
+                  onClick={continueForm}
                   sx={{
                     width: { xs: "100%", sm: "50%" },
                     height: 50,
@@ -274,7 +257,7 @@ const C2CCategory = ({
                   }}
                   variant="outlined"
                 >
-                  Update
+                  Continue
                 </Button>
               </Grid>
             )}
@@ -306,6 +289,7 @@ const C2CCategory = ({
             <C2CForm
               handleFormContinue={handleFormContinue}
               formState={formState}
+              auctionId={auctionId}
               vehicleMakes={vehicleMakes}
               locations={locations}
               catId={router.query.category}

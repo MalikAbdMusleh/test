@@ -14,6 +14,7 @@ export default function CustomAutocomplete({
   setModels,
   setValue,
   name,
+  disabled,
   ...rest
 }) {
   const handleChange = (val) => {
@@ -24,6 +25,7 @@ export default function CustomAutocomplete({
       <Autocomplete
         {...rest}
         error={!value}
+        disabled={disabled==true}
         helperText={value == '' ? 'Field is required' : ''}
         fullWidth
         options={
@@ -63,7 +65,7 @@ export default function CustomAutocomplete({
           <TextField {...params} label={label} variant="standard" />
         )}
       />
-      {!value && <p class="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained muiltr-12bxhpu-MuiFormHelperText-root" id=":rf:-helper-text">Field is required</p>}
+      {(!value&&disabled!=true) && <p class="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained muiltr-12bxhpu-MuiFormHelperText-root" id=":rf:-helper-text">Field is required</p>}
 
     </div>
   );

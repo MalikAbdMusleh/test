@@ -19,8 +19,13 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { checkIfNumber } from "@/lib/helpers";
 import RadioOffer from "./FormComponents/RadioOffer";
+import { InputLabel } from "@mui/material";
+import WarningParagraph from "./FormComponents/WarningParagraph";
+import cookieCutter from "cookie-cutter";
+import { fetchApi } from "@/helpers/fetchApi";
 
-const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
+
+const C2CForm = ({ formState, handleFormContinue, locations, catId ,auctionId}) => {
   const [models, setModels] = useState([]);
   const [submited, setSubmited] = useState(false);
   const dispatch = useDispatch();
@@ -54,8 +59,40 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
   const [readTC, setReadTC] = useState(false);
   const [offerTC, setOfferTC] = useState(false);
   const [errors, setErrors] = useState({});
+
+
+  async function uploadSingleFile(e) {
+    console.log('e.target.files', e.target.files[0]);
+    // URL.createObjectURL(e[1])
+    var blobFileUrl=URL.createObjectURL(e.target.files[0])
+    console.log('blobFileUrl',blobFileUrl);
+
+    if (!blobFileUrl.startsWith("blob")) return;
+    const response = await fetch(blobFileUrl);
+    const blobFile = await response.blob();
+
+    const formData = new FormData();
+    let date=new Date()
+    formData.append("mediaInspectionReports[initial]", blobFile, `${date}-FILE-PDF.pdf`);
+    const accessToken = cookieCutter.get("accessToken");
+    const headers = { Authorization: `Bearer ${accessToken}` };
+
+    console.log('fileData');
+    let fileData = await fetchApi(
+      {
+        url: `auction-vehicles/${auctionId}`,
+        method: "POST",
+        data: formData,
+        headers,
+      },
+      true
+    );
+    console.log(fileData);
+
+
+  }
+
   const formValid = (values) => {
-    setSubmited(true)
     // check if all the required fields are filled start
     //for cars
     if (catId == '1') {
@@ -63,13 +100,13 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
         formState.model &&
         formState.km &&
         formState.fuelType &&
-        formState.transmission &&
         formState.interiorColor &&
         formState.exteriorColor &&
         formState.condition &&
         formState.vehiclePrice &&
         formState.description &&
-        formState.cylinders))) {
+        ((formState.transmission && formState.cylinders) || formState['fuelType']?.id == 'electric')))) {
+        setSubmited(true)
         return;
       }
     }
@@ -80,28 +117,32 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
         formState.description &&
         formState.title &&
         formState.sellerType)) {
+        setSubmited(true)
         return false;
       }
     }
 
     if (formState.saleType == "auction") {
       if (!formState.reservePrice) {
+        setSubmited(true)
         return false;
       }
     }
     if (formState.sellerType == "companyWithVat" || formState.sellerType == "governmentOrganisation") {
       if (!formState.commercialRegistration || !formState.commercialRegistration) {
+        setSubmited(true)
         return false
       }
     }
     if (formState.sellerType == "companyNoVat") {
       if (!formState.commercialRegistration) {
+        setSubmited(true)
         return false
       }
     }
 
     // check if all the required fields are filled end
-    return true ;
+    return true;
   };
 
   detailsFields.map((field) => {
@@ -147,9 +188,11 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
   const renderDetailsFields = detailsFields.map(({ name, label, options }) => (
     <CustomAutocomplete
       name={name}
+      formState={formState}
       value={formState[name]}
       setValue={(payload) => dispatch(setFormState(payload))}
       label={label}
+      disabled={formState['fuelType']?.id == 'electric' && (name == 'cylinders' || name == 'transmission')}
       data={name === "year" ? options?.reverse() : options}
       sx={{ width: "100%", marginBottom: "1%" }}
       setModels={setModels}
@@ -320,6 +363,26 @@ const C2CForm = ({ formState, handleFormContinue, locations, catId }) => {
             regionState={formState.regionId}
             city={formState.cityId}
           />
+
+
+          {catId == "1" && (
+            <Grid item xs={12} sm={12} md={12} lg={12} padding={{ sm: 3 }}>
+              <Typography fontWeight={700} fontSize={19}>
+                Inspection Report
+              </Typography>
+              <Grid item padding={{ sm: 3 }}>
+                <WarningParagraph txt={`It's generally a good idea to have a vehicle inspection as this is visible to the bidder in the auction and provides a stronger sense of safety.`} />
+              </Grid>
+              <Button
+                variant="outlined"
+                style={{ width: "100%" }}
+                component="label"
+              >
+                Upload
+                <input type="file" onChange={uploadSingleFile} hidden accept="application/pdf,application" />
+              </Button>
+            </Grid>
+          )}
           <TermsAndConditions
             errors={errors}
             read={readTC}

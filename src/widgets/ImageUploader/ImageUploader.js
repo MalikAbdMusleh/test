@@ -7,36 +7,108 @@ import Image from "next/image";
 import { fetchApi } from "@/helpers/fetchApi";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import cookieCutter from "cookie-cutter";
+import Cookies from "cookies";
+const ImageUploader = ({ file, setFile,
+  auctionId,
+}) => {
 
-const ImageUploader = ({ file, setFile, upload, imageMapping }) => {
-  function uploadSingleFile(e) {
+  const [imageDataArr, setImageDataArr] = useState([]);
+
+  async function uploadSingleFile(e) {
     let ImagesArray = [];
-    Object.entries(e.target.files).forEach((e) =>
+    Object.entries(e.target.files).forEach((e) =>{
+      console.log('e[1]',e);
       ImagesArray.push(URL.createObjectURL(e[1]))
+    }
     );
     setFile([...file, ...ImagesArray]);
+
+    var blobFileUrl = ImagesArray[ImagesArray.length - 1];
+
+    if (!blobFileUrl.startsWith("blob")) return;
+    const response = await fetch(blobFileUrl);
+    const blobFile = await response.blob();
+
+    const formData = new FormData();
+    formData.append("mediaPhoto", blobFile, `image${ImagesArray.length - 1}.png`);
+    const accessToken = cookieCutter.get("accessToken");
+    const headers = { Authorization: `Bearer ${accessToken}` };
+
+    let imageData = await fetchApi(
+      {
+        url: `auction-vehicles/${auctionId}/upload-media`,
+        method: "POST",
+        data: formData,
+        headers,
+      },
+      true
+    );
+
+    let newImageData = imageDataArr;
+    newImageData[newImageData.length] = imageData;
+    setImageDataArr(newImageData)
+
   }
+
 
   const deleteFile = async (e) => {
     const s = file.filter((item, index) => index !== e);
-    setFile(s);
+    const deletedMediaData = imageDataArr.filter((item, index) => index == e);
+    const d = imageDataArr.filter((item, index) => index == e);
 
-    if (s?.[0]?.startsWith("blob")) return;
-    if (!imageMapping) return;
-    const mediaId = imageMapping[s?.[0]];
-    console.log(mediaId, imageMapping, s[0]);
+    setFile(s);
+    setImageDataArr(d)
+
+    const accessToken = cookieCutter.get("accessToken");
+    const headers = { Authorization: `Bearer ${accessToken}` };
     await fetchApi(
-      { url: `auction-vehicles/${mediaId}/delete-media`, method: "DELETE" },
+      { url: `auction-vehicles/${deletedMediaData[0]?.id}/delete-media`, method: "DELETE", headers },
+
       true
     );
   };
   // Drag and Drop Handlers
-  const moveFile = (fromIndex, toIndex) => {
+  const moveFile = async (fromIndex, toIndex) => {
     const updatedFile = [...file];
     const draggedItem = updatedFile[fromIndex];
     updatedFile.splice(fromIndex, 1);
     updatedFile.splice(toIndex, 0, draggedItem);
     setFile(updatedFile);
+
+    console.log('imageDataArr before', imageDataArr);
+
+    const updatedFileData = [...imageDataArr];
+    const draggedItemData = updatedFileData[fromIndex];
+    updatedFileData.splice(fromIndex, 1);
+    updatedFileData.splice(toIndex, 0, draggedItemData);
+    setImageDataArr(updatedFileData);
+
+    console.log('file', file);
+    console.log('updatedFileData', updatedFileData);
+
+
+    const accessToken = cookieCutter.get("accessToken");
+    console.log('auctionId', auctionId);
+    const headers = { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' };
+
+    const reorderedDataArr = updatedFileData.map((e, i) => { return { "id": e.id, "position": i } })
+
+    let data = {
+      "reorder": reorderedDataArr
+    }
+
+    console.log('auctionId',auctionId)
+    let imageData = await fetchApi(
+      {
+        url: `auction-vehicles/${auctionId}/reorder-media`,
+        method: "POST",
+        data: data,
+        headers,
+      },
+      true
+    );
+    console.log('imageData',imageData);
   };
 
   const DragItem = ({ index }) => {
@@ -44,7 +116,7 @@ const ImageUploader = ({ file, setFile, upload, imageMapping }) => {
       type: "IMAGE",
       item: { index },
       collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
+        isDragging: monitor.didDrop(),
       }),
     });
 
@@ -117,7 +189,7 @@ const ImageUploader = ({ file, setFile, upload, imageMapping }) => {
               startIcon={<AddIcon />}
               variant="outlined"
             >
-              <input type="file" onChange={uploadSingleFile} multiple hidden />
+              <input type="file" onChange={uploadSingleFile} hidden />
             </Button>
           </Grid>
         </Grid>

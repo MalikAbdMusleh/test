@@ -17,7 +17,7 @@ const paymentApi = profileApi.injectEndpoints({
         generateCardUrl: build.mutation({
             query: (data) => {
                 return {
-                    url: '/home',
+                    url: process.env.NEXT_PUBLIC_API_BASE_URL+'/payments/generate-temp-payment-url',
                     headers: { path: '/payments/generate-temp-payment-url', 'Content-Type': 'application/json' },
                     method: 'POST',
                     body: data.type === 'inspection_report_advanced_buyer' ? {
@@ -180,7 +180,7 @@ const paymentApi = profileApi.injectEndpoints({
                     }
                 }
                 return {
-                    url: '/home',
+                    url: process.env.NEXT_PUBLIC_API_BASE_URL+'/payments/generate-temp-payment-url',
                     headers: { path: '/payments/generate-temp-payment-url', 'Content-Type': 'application/json' },
                     method: 'POST',
                     body: bodyTypeMapping[data.type]
