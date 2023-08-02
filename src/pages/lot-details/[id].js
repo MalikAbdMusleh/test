@@ -802,6 +802,14 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
                         </Typography>
                       </Grid>
                     )}
+                    {auctionDetails?.saleType === "auction" && !auctionDetails?.buyNowOption &&
+                      auctionDetails?.user_id !== user?.id && (
+                      <Grid item textAlign={"center"}>
+                        <Typography fontSize={18} color={"rgb(160,70,88)"}>
+                          Buy now option is not available.
+                        </Typography>
+                      </Grid>
+                    )}
                     {auctionDetails?.saleType === "auction" &&
                       auctionDetails?.user_id !== user?.id &&
                       auctionDetails?.saleOffer?.offer?.state !==

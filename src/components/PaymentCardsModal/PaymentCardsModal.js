@@ -19,7 +19,7 @@ const PaymentCardsModal = ({
     const handleUseCard = () => {
         cardTokenQ({ amount, card: selectedCard, type, inspectionReportId }).unwrap()
             .then(({ url }) => {
-                const newWindow = window.open(url)
+                const newWindow = window.open(url,"","height=200,width=400,scrollbars=no")
                 const interval = setInterval(() => {
                     if (newWindow.closed) {
                         clearInterval(interval);
@@ -27,6 +27,7 @@ const PaymentCardsModal = ({
                         else window.location.reload()
                     }
                 }, 500);
+                setSelectedCard()
             }).catch(e => {
 
             })
@@ -35,7 +36,9 @@ const PaymentCardsModal = ({
     const handleAddNewCard = () => {
         generateUrlQ({ amount, type, inspectionReportId }).unwrap()
             .then(({ url }) => {
-                const newWindow = window.open(url)
+                // const newWindow = window.open(url)
+                const newWindow = window.open(url,"","height=200,width=400,scrollbars=no")
+                
                 const interval = setInterval(() => {
                     if (newWindow.closed) {
                         clearInterval(interval);
@@ -94,8 +97,8 @@ const PaymentCardsModal = ({
                 </FormControl>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleToggleCardsModal}>Cancel</Button>
-                <Button onClick={handleUseCard}>Ok</Button>
+                <Button onClick={()=>{handleToggleCardsModal();setSelectedCard();}}>Cancel</Button>
+                <Button onClick={handleUseCard} disabled={!selectedCard}>Ok</Button>
                 <Button onClick={handleAddNewCard}>Add new card</Button>
 
             </DialogActions>
