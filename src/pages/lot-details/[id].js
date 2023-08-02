@@ -8,6 +8,10 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import ReportIcon from '@mui/icons-material/Report';
+import GavelIcon from "@mui/icons-material/Gavel";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
 import CustomButton from "@/components/CustomButton";
 import {
   Alert,
@@ -38,6 +42,8 @@ import {
   useMakeOfferMutation,
   useWithdrawOfferMutation,
 } from "@/redux/apis/auction-salesApi/buyerApi";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+
 import {
   useAcceptSpecificOfferMutation,
   useCounterOfferMutation,
@@ -53,6 +59,9 @@ import {
 } from "@/redux/apis/paymentApi";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import Reviewpurchase from "@/components/Reviewpurchase/Reviewpurchase";
+import WarningParagraph from "@/widgets/C2CForm/FormComponents/WarningParagraph";
+import CardMetadata from "@/components/Cards/AuctionCard/CardMetadata/CardMetadata";
+import { Visibility } from "@mui/icons-material";
 const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
   if (error) console.log("###ERROR");
   const router = useRouter();
@@ -62,7 +71,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
   const { user } = useSelector((state) => state.auth);
   const [topUpSucces, setTopUpSucces] = useState(false);
   const [open, setOpen] = useState(false);
-  const [ lock, setLock ] = useState( false );
+  const [lock, setLock] = useState(false);
   const [inspectionReportChecked, setInspectionReportChecked] = useState(false);
   const [openPricingOptions, setOpenPricingOptions] = useState(false);
   const [storeInspectionQ] = useInspectionReportStoreMutation();
@@ -138,19 +147,18 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
-  
-var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
+  var secondsLeft = auctionDetails?.timeRemaining?.secondsLeft;
   const getTime = () => {
-       secondsLeft--
-      setDays(Math.floor(secondsLeft / (1 * 60 * 60 * 24)));
-      setHours(Math.floor((secondsLeft / (1 * 60 * 60)) % 24));
-      setMinutes(Math.floor((secondsLeft / 1 / 60) % 60));
-      setSeconds(Math.floor((secondsLeft / 1) % 60));
+    secondsLeft--
+    setDays(Math.floor(secondsLeft / (1 * 60 * 60 * 24)));
+    setHours(Math.floor((secondsLeft / (1 * 60 * 60)) % 24));
+    setMinutes(Math.floor((secondsLeft / 1 / 60) % 60));
+    setSeconds(Math.floor((secondsLeft / 1) % 60));
   };
 
   useEffect(() => {
-      const interval = setInterval(() => getTime(), 1000);
-      return () => clearInterval(interval);
+    const interval = setInterval(() => getTime(), 1000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -214,7 +222,7 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
     case "advanced":
       inspectionCategory = "inspectionAdvancedPrice";
     default:
-      inspectionCategory = "";
+      inspectionCategory = "inspectionAdvancedPrice";
   }
   const inspectionPrice =
     auctionDetails?.vehicleModel?.categories.length > 0
@@ -223,26 +231,26 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
   const handleBuyNow = () => {
     if (user?.deposit?.amount === undefined) router.push("/auth");
     else {
-      if ( enoughBalance ) {
-          handleOpenBuyDialog()
-        if ( topUpSucces || lock ) {
-          lockBuyQ( router.query.id )
+      if (enoughBalance) {
+        handleOpenBuyDialog()
+        if (topUpSucces || lock) {
+          lockBuyQ(router.query.id)
             .unwrap()
-            .then( ( res ) => {
-              if ( res.error )
-                setSnackbarState( ( state ) => ( {
+            .then((res) => {
+              if (res.error)
+                setSnackbarState((state) => ({
                   ...state,
                   open: true,
                   message: res.message,
-                } ) );
+                }));
               else {
                 handleBuyNow();
                 // router.push(`/checkout?id=${auctionDetails?.id}`);
               }
-            } )
-            .catch( ( e ) => {
-              console.log( e );
-            } );
+            })
+            .catch((e) => {
+              console.log(e);
+            });
         }
       }
       else
@@ -369,14 +377,14 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
       })
         .unwrap()
         .then((res) => {
-           window.location.reload();
+          window.location.reload();
         })
-        .catch((e) => {});
+        .catch((e) => { });
     } else setOpenCardsModal(true);
   };
 
   const [counterOfferAmount, setCounterOfferAmount] = useState("");
-  const renderOffers = getOffersQ?.data?.length>0? (getOffersQ?.data?.map((el, i) => {
+  const renderOffers = getOffersQ?.data?.length > 0 ? (getOffersQ?.data?.map((el, i) => {
     return (
       <Box
         key={i}
@@ -429,7 +437,7 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
         )}
       </Box>
     );
-  })):[];
+  })) : [];
 
   return (
     <>
@@ -478,11 +486,35 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                   {auctionDetails?.title}
                 </Typography>
               </Grid>
-              <Grid item>
+              <Grid item flexDirection={'row'} display={'flex'} justifyContent={'center'} alignItems={'center'} >
+             
+                <VisibilityIcon sx={{ marginRight: 1, fontSize: 25 }}  />
+              
+            
+              <span> {auctionDetails?.analytics?.views}</span> 
+            
+                 {auctionDetails?.saleType === "auction" && (
+                  <GavelIcon
+                    sx={{
+                      fontSize: 25,
+                      marginRight: 1,
+                      marginLeft: 1,
+                      transform: "scaleX(-1)",
+                    }}
+                  />
+                )}
+                {auctionDetails?.saleType === "sale" && (
+                  <ShoppingCartIcon sx={{ fontSize: 25, marginRight: 1 ,marginLeft: 1,}} />
+                )}
+                              <span> {auctionDetails?.totalBids}</span> 
+
+                  <Image src={auctionDetails?.country?.flagImagesUrl} alt="flag" width={40} height={25} style={{marginLeft:'15px',marginRight:'15px'}} />
+                  
                 <FavoritesButton
                   id={auctionDetails?.id}
                   isFavourite={auctionDetails?.isFavourite}
                 />
+                
               </Grid>
             </Grid>
             <Grid item>
@@ -500,11 +532,11 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                       </Grid>
                     </Grid>
                     <Grid item py={2}>
-                    <Grid item my={2} xs={12}>
-                      <Typography fontWeight={700} fontSize={22}>
-                      Description
-                      </Typography>
-                    </Grid>
+                      <Grid item my={2} xs={12}>
+                        <Typography fontWeight={700} fontSize={22}>
+                          Description
+                        </Typography>
+                      </Grid>
                       <Typography
                         fontWeight={400}
                         fontSize={14}
@@ -555,6 +587,24 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                         <Typography fontWeight={600} fontSize={18}>
                           Inspection Report
                         </Typography>
+
+                        {auctionDetails?.addOns?.inspectionReports?.initial?.url &&
+                          <CustomButton
+                            onClick={() => { window.open(auctionDetails?.addOns?.inspectionReports?.initial?.url, '_blank', 'noopener,noreferrer') }}
+                            variant={"contained"}
+                            sx={{
+                              fontWeight: 800,
+                              fontSize: ".9rem",
+                              borderRadius: 1,
+                              color: "black",
+                              width: "15%",
+                              marginLeft: '20px',
+                              marginRight: '20px',
+                            }}
+                            label={"View"}
+                          />
+
+                        }
                       </Grid>
                       <Grid item>
                         <Typography fontWeight={500}>
@@ -607,20 +657,20 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                     flexDirection={"column"}
                     justifyContent={"space-between"}
                   >
-                    { (
+                    {(
                       <>
                         <Grid justifyContent={'center'} alignItems={'center'} textAlign={"center"} >
-                               
-                      <Typography fontWeight={700} fontSize={22 }textAlign={"center"}>
-                        Ending In 
-                      </Typography>
-                   
+
+                          <Typography fontWeight={700} fontSize={22} textAlign={"center"}>
+                            Ending In
+                          </Typography>
+
                           <Typography
                             textAlign={"center"}
                             fontWeight={700}
                             fontSize={26}
                           >
-                            {days}D : {hours}H : {minutes}M  
+                            {days}D : {hours}H : {minutes}M
                           </Typography>
                         </Grid>
                         <Divider sx={{ margin: "10px 0" }} />
@@ -642,6 +692,20 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                             # {auctionDetails.lot}
                           </Grid>
                         )}
+                        {auctionDetails?.user_id == user?.id &&
+                          <Grid item padding={{ sm: 1 }} textAlign={"center"}>
+                            <Box width={'100%'} display={'flex'} textAlign={"center"} alignItems={'center'} justifyContent={'center'}>
+                              {/* <ReportIcon sx={{ color: 'grey', marginRight: 1 }} /> */}
+                              <Typography
+                                fontSize={18}
+                                color={'#1ce71c'}
+                                fontWeight={600}
+                                textAlign={"center"}
+                                variant='subtitle1'
+                                display={'inline-block'}>This is your own item!</Typography>
+                            </Box>
+                          </Grid>
+                        }
                         {auctionDetails?.saleType === "sale" && (
                           <Grid
                             item
@@ -721,9 +785,16 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                             </Grid>
                           </Grid>
                         )}
+                      {auctionDetails?.reservedPrice?.amount > auctionDetails?.highestBidPrice?.amount && (
+                        <Grid item textAlign={"center"}>
+                          <Typography fontSize={18} color={"rgb(160,70,88)"}>
+                            Reserve Price Not Met
+                          </Typography>
+                        </Grid>
+                      )}
                     </Grid>
-                    <Divider sx={{ margin: "10px 0" }} />
 
+                    <Divider sx={{ margin: "10px 0" }} />
                     {auctionDetails?.buyer && (
                       <Grid item textAlign={"center"}>
                         <Typography fontSize={18} color={"rgb(160,70,88)"}>
@@ -760,7 +831,7 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                           item
                           textAlign={"center"}
                           py={1}
-                          >
+                        >
                           <CustomButton
                             onClick={handleBuyNow}
                             variant={"contained"}
@@ -930,9 +1001,9 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
               >
                 {renderOffers}
               </SliderBlock>
-              {renderOffers?.length<1&&<div style={{display:'flex',justifyContent:"center",alignItems:"center",width:"100vw"}}>
-                You don't have an offers yet ! 
-                </div>}
+              {renderOffers?.length < 1 && <div style={{ display: 'flex', justifyContent: "center", alignItems: "center", width: "100vw" }}>
+                You don't have an offers yet !
+              </div>}
             </Grid>
           )}
           <Snackbar
@@ -954,8 +1025,7 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                   inputValue={inputValue}
                   switchState={switchState}
                   auctionDetails={auctionDetails}
-                  title={`${
-                    auctionDetails?.saleType === "sale" ? "Offer" : "Bid"
+                  title={`${auctionDetails?.saleType === "sale" ? "Offer" : "Bid"
                     } placed successfuly!`}
                   type={auctionDetails?.saleType === "sale" ? "offer" : "bid"}
                   handleCloseTopupSuccess={handleCloseTopupSuccess}
