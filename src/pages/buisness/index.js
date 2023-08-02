@@ -62,13 +62,13 @@ const Partners = () => {
       </Box> 
     </Grid> */}
 
-      <Box textAlign={"center"} width={"100%"}>
+      <Box textAlign={"center"} width={"100%"} padding={"10vh"}>
         <>
           <Typography
             lineHeight={1}
             fontSize={"600%"}
             fontWeight={1000}
-            color={"#171717"}
+            color={"#3d3d3d"}
           >
             {t("common:home.comming_soon")}
           </Typography>

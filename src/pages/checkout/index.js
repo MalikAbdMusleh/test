@@ -25,39 +25,39 @@ const Checkout = () => {
             },
             { id: 1, label: "Mazadak Fee", cost: `${apiResponse['currencyCode']} ${apiResponse['commission'].amount}`, },
             { id: 2, label: "VAT", cost: `${apiResponse['currencyCode']} ${apiResponse['vat'].amount}` },
-            {
-                id: 3,
-                label: "Delivery Fee",
-                value: "deliveryFee",
-                cost: addressOption === 'pickup' ? '----' : `${apiResponse['currencyCode']} ${apiResponse['deliveryFee'].amount}`,
-            },
-            { id: 4, label: "Deposit", cost: `${apiResponse['currencyCode']} ${apiResponse['deposit'].amount}` },
-            { id: 5, label: "Total Price", cost: `${apiResponse['currencyCode']} ${apiResponse['totalPrice'].amount}` },
+            // {
+            //     id: 3,
+            //     label: "Delivery Fee",
+            //     value: "deliveryFee",
+            //     cost: addressOption === 'pickup' ? '----' : `${apiResponse['currencyCode']} ${apiResponse['deliveryFee'].amount}`,
+            // },
+            { id: 3, label: "Deposit", cost: `${apiResponse['currencyCode']} ${apiResponse['deposit'].amount}` },
+            { id: 4, label: "Total Price", cost: `${apiResponse['currencyCode']} ${apiResponse['totalPrice'].amount}` },
 
         ]))
 
     }
     const [buyNowPreviewQ, buyNowPreviewRes] = useBuyNowPreviewMutation();
     useEffect(() => {
-        const requestBody = addressOption ? {
-            "delivery": {
-                "capacity": 1,
-                "coordinates": {
-                    "latitude": lat,
-                    "longitude": lng
-                }
-            }
-        } : {};
+        // const requestBody = addressOption ? {
+        //     "delivery": {
+        //         "capacity": 1,
+        //         "coordinates": {
+        //             "latitude": lat,
+        //             "longitude": lng
+        //         }
+        //     }
+        // } : {};
         buyNowPreviewQ(
             {
-                body: requestBody,
+                body: {},
                 params: `auctionVehicleId=${router.query.id}`
             }
         ).unwrap().then(res => {
             mapPricingData(res)
         })
             .catch(e => console.log(e))
-    }, [addressOption])
+    }, [])
 
     useEffect(() => {
         if (address) {

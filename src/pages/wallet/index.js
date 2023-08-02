@@ -254,6 +254,7 @@ const WalletNew = () => {
                       style={{ objectFit: "contain" }}
                       fill
                       src="/imgs/paymentIcons/mc.svg"
+                      alt="master card"
                     />
                   </Grid>
                   <Grid
@@ -265,6 +266,7 @@ const WalletNew = () => {
                       style={{ objectFit: "contain" }}
                       fill
                       src="/imgs/paymentIcons/visa.svg"
+                      alt="visa"
                     />
                   </Grid>
                   <Grid
@@ -276,6 +278,7 @@ const WalletNew = () => {
                       style={{ objectFit: "contain" }}
                       fill
                       src="/imgs/paymentIcons/mada.svg"
+                      alt="mada"
                     />
                   </Grid>
                 </Grid>
@@ -300,6 +303,7 @@ const WalletNew = () => {
                     style={{ objectFit: "contain" }}
                     fill
                     src="/imgs/paymentIcons/stc.svg"
+                    alt="stc"
                   />
                 </Grid>
               </Button>

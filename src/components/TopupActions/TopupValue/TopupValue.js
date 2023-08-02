@@ -9,6 +9,7 @@ export default function TopupValue({
   snackbarState,
   setHasError,
   setButtonDisabel,
+  currencyCode
 }) {
   const handleOnChange = (event) => {
     const newValue = event.target.value;
@@ -44,7 +45,7 @@ export default function TopupValue({
         color="#9d9d9d"
         fontSize={12}
       >
-        The Minimum {action} amount is {minimumBid.toLocaleString()}
+        The Minimum {action} amount is {currencyCode} {minimumBid.toLocaleString()}
       </Typography>
       {/* {snackbarState?.open ? (
         <Typography

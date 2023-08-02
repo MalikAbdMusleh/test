@@ -201,14 +201,15 @@ export default function TopUp({
           snackbarState={snackbarState}
           minimumBid={
             auctionDetails?.saleType === "sale"
-              ? auctionDetails?.highestBidPrice?.amount
+              ? auctionDetails?.highestBidPrice?.amount 
                 ? auctionDetails?.highestBidPrice?.amount +
-                  auctionDetails?.minimumBidAmount?.amount
-                : auctionDetails?.minimumBidAmount?.amount
+                auctionDetails?.minimumBidAmount?.amount 
+                : auctionDetails?.minimumBidAmount?.amount 
               : (auctionDetails?.highestBidPrice?.amount ??
                   auctionDetails?.startingPrice?.amount) +
-                auctionDetails?.minimumBidAmount?.amount
+              auctionDetails?.minimumBidAmount?.amount 
           }
+          currencyCode={auctionDetails?.currencyCode}
         />
         <TextField
           sx={{ display: switchState ? "block" : "none" }}

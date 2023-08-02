@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Grid, Button } from "@mui/material";
+import { Box, Typography, Grid, Button, Dialog } from "@mui/material";
 import Image from "next/image";
 import { Warning } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
@@ -17,11 +17,13 @@ function Reviewpurchase({
   type,
   handleCloseTopupSuccess,
   snackbarState,
+  checkoutSuccess,
 }) {
   const router = useRouter();
   const [addressOption, setAddressOption] = useState();
   const [addresses, setAddresses] = useState([]);
   const [pricingData, setPricingData] = useState([]);
+  const [openDialog, setOpenDialog] = useState(snackbarState);
 
   const mapPricingData = (apiResponse) => {
     setPricingData((state) => [
@@ -40,22 +42,22 @@ function Reviewpurchase({
         label: "VAT",
         cost: `${apiResponse["currencyCode"]} ${apiResponse["vat"].amount}`,
       },
+      // {
+      //   id: 3,
+      //   label: "Delivery Fee",
+      //   value: "deliveryFee",
+      //   cost:
+      //     addressOption === "pickup"
+      //       ? "----"
+      //       : `${apiResponse["currencyCode"]} ${apiResponse["deliveryFee"].amount}`,
+      // },
       {
         id: 3,
-        label: "Delivery Fee",
-        value: "deliveryFee",
-        cost:
-          addressOption === "pickup"
-            ? "----"
-            : `${apiResponse["currencyCode"]} ${apiResponse["deliveryFee"].amount}`,
-      },
-      {
-        id: 4,
         label: "Deposit",
         cost: `${apiResponse["currencyCode"]} ${apiResponse["deposit"].amount}`,
       },
       {
-        id: 5,
+        id: 4,
         label: "Total Price",
         cost: `${apiResponse["currencyCode"]} ${apiResponse["totalPrice"].amount}`,
       },
@@ -63,19 +65,20 @@ function Reviewpurchase({
   };
   const [buyNowPreviewQ, buyNowPreviewRes] = useBuyNowPreviewMutation();
   useEffect(() => {
-    const requestBody = addressOption
-      ? {
-          delivery: {
-            capacity: 1,
-            coordinates: {
-              latitude: lat,
-              longitude: lng,
-            },
-          },
-        }
-      : {};
+    // const requestBody = addressOption
+    //   ? {
+    //       delivery: {
+    //         capacity: 1,
+    //         coordinates: {
+    //           latitude: lat,
+    //           longitude: lng,
+    //         },
+    //       },
+    //     }
+    //   : {};
     buyNowPreviewQ({
-      body: requestBody,
+      // body: requestBody,
+      body: {},
       params: `auctionVehicleId=${router.query.id}`,
     })
       .unwrap()
@@ -84,8 +87,36 @@ function Reviewpurchase({
       })
       .catch((e) => console.log(e));
   }, []);
-  console.log(pricingData);
   return (
+    <>
+    <Dialog open={openDialog} onClose={() => {setOpenDialog(false)}}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-end", flexDirection: "column", gap: "10px", background: "#fff", padding: "10px" }}>
+      <Typography sx={{ fontSize: "18px", fontStyle: "normal"}} padding={"15px"} style={{ color: "black"}}>
+        Complete the payment in 3 minutes from now
+      </Typography>
+      <Button 
+        variant="contained"
+        sx={{
+          width: "20%",
+          height: "50px",
+          marginTop: "10px",
+          marginBottom: "10px",
+          background: "#fff",
+          borderRadius: "10px",
+          border: "1px solid #00F0A9",
+          fontSize: "18px",
+          fontWeight: 500,
+          fontStyle: "normal",
+          color: "#00F0A9",
+        }}
+        onClick={() => {
+          setOpenDialog(false);
+        }}
+      >
+        Ok
+      </Button>
+      </Box>
+    </Dialog>
     <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
       <ArrowBackIosRoundedIcon
         onClick={() => {
@@ -243,7 +274,7 @@ function Reviewpurchase({
                 padding: "10px",
               }}
             >
-              tatal price
+              total price
             </Typography>
             <Typography
               sx={{
@@ -279,6 +310,7 @@ function Reviewpurchase({
         <Button
           onClick={() => {
             router.push(`/checkout?id=${auctionDetails?.id}`);
+            checkoutSuccess();
           }}
           variant="contained"
           sx={{
@@ -295,6 +327,7 @@ function Reviewpurchase({
         </Button>
       </Box>
     </Box>
+    </>
   );
 }
 

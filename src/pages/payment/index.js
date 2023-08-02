@@ -47,42 +47,42 @@ export default function Payment({
               setValue={setFormState}
               width={{ xs: "100%" }}
               options={[
-                {
-                  val: "delivery",
-                  label: "Delivery",
-                  subLabel: "Fee based on location",
-                  extras: {
-                    value: addressOption?.val,
-                    name: "addressOptions",
-                    handleChange: handleSelectAddress,
-                    addresses: addresses,
-                    links: (
-                      <Link
-                        href={`/add-address?id=${id}`}
-                        style={{ textDecorationColor: "#00f0a9" }}
-                      >
-                        <Grid
-                          container
-                          wrap="nowrap"
-                          direction="row"
-                          alignItems="center"
-                        >
-                          <Typography
-                            textTransform="none"
-                            color="primary"
-                            fontSize={15}
-                          >
-                            Add new delivery address
-                          </Typography>
-                          <ArrowForwardIosIcon
-                            fontSize="small"
-                            color="primary"
-                          />
-                        </Grid>
-                      </Link>
-                    ),
-                  },
-                },
+                // {
+                //   val: "delivery",
+                //   label: "Delivery",
+                //   subLabel: "Fee based on location",
+                //   extras: {
+                //     value: addressOption?.val,
+                //     name: "addressOptions",
+                //     handleChange: handleSelectAddress,
+                //     addresses: addresses,
+                //     links: (
+                //       <Link
+                //         href={`/add-address?id=${id}`}
+                //         style={{ textDecorationColor: "#00f0a9" }}
+                //       >
+                //         <Grid
+                //           container
+                //           wrap="nowrap"
+                //           direction="row"
+                //           alignItems="center"
+                //         >
+                //           <Typography
+                //             textTransform="none"
+                //             color="primary"
+                //             fontSize={15}
+                //           >
+                //             Add new delivery address
+                //           </Typography>
+                //           <ArrowForwardIosIcon
+                //             fontSize="small"
+                //             color="primary"
+                //           />
+                //         </Grid>
+                //       </Link>
+                //     ),
+                //   },
+                // },
                 {
                   val: "pickup",
                   label: "Pick up",

@@ -62,6 +62,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
   const { user } = useSelector((state) => state.auth);
   const [topUpSucces, setTopUpSucces] = useState(false);
   const [open, setOpen] = useState(false);
+  const [ lock, setLock ] = useState( false );
   const [inspectionReportChecked, setInspectionReportChecked] = useState(false);
   const [openPricingOptions, setOpenPricingOptions] = useState(false);
   const [storeInspectionQ] = useInspectionReportStoreMutation();
@@ -89,6 +90,9 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
   };
   const handleCloseOfferDialog = () => setOfferDialogOpen(false);
   const handleCloseBuyDialog = () => setBuyDialogOpen(false);
+  const checkoutSuccess = () => {
+    setLock(true);
+  }
   const onPayForInspection = () => setOpenPricingOptions(false);
   const enoughBalance =
     user?.deposit?.amount >= auctionDetails?.depositAmount?.amount;
@@ -134,7 +138,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
- 
+  
 var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
   const getTime = () => {
        secondsLeft--
@@ -216,28 +220,31 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
     auctionDetails?.vehicleModel?.categories.length > 0
       ? auctionDetails?.vehicleModel?.categories[0][inspectionCategory]?.amount
       : null;
-
   const handleBuyNow = () => {
     if (user?.deposit?.amount === undefined) router.push("/auth");
     else {
-      if (enoughBalance)
-        lockBuyQ(router.query.id)
-          .unwrap()
-          .then((res) => {
-            if (res.error)
-              setSnackbarState((state) => ({
-                ...state,
-                open: true,
-                message: res.message,
-              }));
-            else {
-              handleOpenBuyDialog();
-              // router.push(`/checkout?id=${auctionDetails?.id}`);
-            }
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+      if ( enoughBalance ) {
+          handleOpenBuyDialog()
+        if ( topUpSucces || lock ) {
+          lockBuyQ( router.query.id )
+            .unwrap()
+            .then( ( res ) => {
+              if ( res.error )
+                setSnackbarState( ( state ) => ( {
+                  ...state,
+                  open: true,
+                  message: res.message,
+                } ) );
+              else {
+                handleBuyNow();
+                // router.push(`/checkout?id=${auctionDetails?.id}`);
+              }
+            } )
+            .catch( ( e ) => {
+              console.log( e );
+            } );
+        }
+      }
       else
         router.push(
           `/wallet?type=${auctionDetails?.saleType}&id=${auctionDetails?.id}&amount=${auctionDetails?.depositAmount?.amount}`
@@ -717,10 +724,17 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                     </Grid>
                     <Divider sx={{ margin: "10px 0" }} />
 
+                    {auctionDetails?.buyer && (
+                      <Grid item textAlign={"center"}>
+                        <Typography fontSize={18} color={"rgb(160,70,88)"}>
+                          This sale is reserved
+                        </Typography>
+                      </Grid>
+                    )}
                     {auctionDetails?.saleType === "auction" &&
                       auctionDetails?.user_id !== user?.id &&
                       auctionDetails?.saleOffer?.offer?.state !==
-                        "accepted" && (
+                      "accepted" && (
                         <Grid item xs={12} textAlign={"center"}>
                           <CustomButton
                             onClick={() => handleOpenOfferDialog()}
@@ -733,6 +747,7 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                               width: "84%",
                             }}
                             label={"Place Bid"}
+                            disabled={auctionDetails?.buyer}
                           />
                         </Grid>
                       )}
@@ -740,14 +755,14 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                     {auctionDetails?.buyNowOption &&
                       auctionDetails?.user_id !== user?.id &&
                       auctionDetails?.saleOffer?.offer?.state !==
-                        "accepted" && (
+                      "accepted" && (
                         <Grid
                           item
                           textAlign={"center"}
                           py={1}
-                          onClick={handleBuyNow}
-                        >
+                          >
                           <CustomButton
+                            onClick={handleBuyNow}
                             variant={"contained"}
                             sx={{
                               fontWeight: 800,
@@ -758,6 +773,7 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                               width: "84%",
                             }}
                             label={"Buy Now"}
+                            disabled={auctionDetails?.buyer}
                           />
                         </Grid>
                       )}
@@ -765,7 +781,7 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                       auctionDetails?.saleOffer?.canAcceptOffers &&
                       auctionDetails?.user_id !== user?.id &&
                       auctionDetails?.saleOffer?.offer?.state !==
-                        "accepted" && (
+                      "accepted" && (
                         <Grid item textAlign={"center"}>
                           <CustomButton
                             onClick={() => handleOpenOfferDialog()}
@@ -779,6 +795,7 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                               width: "84%",
                             }}
                             label={"Make Offer"}
+                            disabled={auctionDetails?.buyer}
                           />
                         </Grid>
                       )}
@@ -787,7 +804,7 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                       !offerWithdrawn &&
                       auctionDetails?.user_id !== user?.id &&
                       auctionDetails?.saleOffer?.offer?.state !==
-                        "accepted" && (
+                      "accepted" && (
                         <Grid item margin="auto" width="84%">
                           <Grid
                             container
@@ -939,7 +956,7 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                   auctionDetails={auctionDetails}
                   title={`${
                     auctionDetails?.saleType === "sale" ? "Offer" : "Bid"
-                  } placed successfuly!`}
+                    } placed successfuly!`}
                   type={auctionDetails?.saleType === "sale" ? "offer" : "bid"}
                   handleCloseTopupSuccess={handleCloseTopupSuccess}
                   dataOffer={dataOffer}
@@ -970,6 +987,7 @@ var secondsLeft=auctionDetails?.timeRemaining?.secondsLeft;
                 handleCloseTopupSuccess={handleCloseTopupSuccess}
                 type={auctionDetails?.saleType === "sale" ? "offer" : "bid"}
                 auctionDetails={auctionDetails}
+                checkoutSuccess={checkoutSuccess}
               />
             }
           />

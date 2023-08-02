@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import IOSSwitch from "@/components/IOSSwitch/IOSSwitch";
 import WarningParagraph from "./WarningParagraph";
+import Link from "next/link";
 
 const TermsAndConditions = ({ read, setRead, errors }) => {
     return (
@@ -11,7 +12,7 @@ const TermsAndConditions = ({ read, setRead, errors }) => {
                 <Typography fontWeight={700} fontSize={19}>Terms and Conditions</Typography>
                 <Grid item>
                     <Grid container justifyContent={'space-between'}>
-                        <Typography fontWeight={600} fontSize={12}>I have read and agreed to the <Typography variant="caption" fontWeight={600} fontSize={12} color='primary'>Terms and Conditions</Typography></Typography>
+                        <Typography fontWeight={600} fontSize={12}>I have read and agreed to the <Link href={"/terms-and-conditions"}><Typography variant="caption" fontWeight={600} fontSize={12} color='primary'>Terms and Conditions</Typography></Link></Typography>
                         <FormControlLabel
                             control={
                                 <IOSSwitch
