@@ -21,7 +21,7 @@ export const auctionApi = createApi({
     getAuctionDetailsbyID: builder.query({
       query: (arg) => {
         return {
-          url: `auction/${arg?.id}`,
+          url: `auction-vehicles/${arg?.id}`,
           params: arg?.params,
         };
       },
@@ -75,7 +75,7 @@ export const auctionApi = createApi({
     getAuctionHighestBid: builder.query({
       query: ({ auctionVehicleId }) => {
         return {
-          url: `auction/highest-bid/${auctionVehicleId}`,
+          url: `auction-vehicles/highest-bid/${auctionVehicleId}`,
         };
       },
     }),
@@ -83,7 +83,7 @@ export const auctionApi = createApi({
     getAuctionTimeRemaining: builder.query({
       query: ({ id }) => {
         return {
-          url: `auction/time-remaining/${id}`,
+          url: `auction-vehicles/time-remaining/${id}`,
         };
       },
     }),
@@ -91,7 +91,7 @@ export const auctionApi = createApi({
     getAuctionCountByTypeId: builder.query({
       query: (arg) => {
         return {
-          url: `auction/count-by-type`,
+          url: `auction-vehicles/count-by-type`,
           params: arg?.params,
         };
       },
@@ -100,7 +100,7 @@ export const auctionApi = createApi({
     getAuctionDeliveryRates: builder.query({
       query: ({ rates }) => {
         return {
-          url: `auction/delivery-rates/${rates}`,
+          url: `auction-vehicles/delivery-rates/${rates}`,
         };
       },
     }),
@@ -108,7 +108,7 @@ export const auctionApi = createApi({
     getAuctionDelivery: builder.query({
       query: (arg) => {
         return {
-          url: `auction/delivery/${arg?.auctionVehicleId}/${arg?.latLng}`,
+          url: `auction-vehicles/delivery/${arg?.auctionVehicleId}/${arg?.latLng}`,
         };
       },
     }),

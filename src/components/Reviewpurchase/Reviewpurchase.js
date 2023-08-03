@@ -166,7 +166,7 @@ function Reviewpurchase({
       <Box sx={{ height: "300px", position: "relative", width: "100%" }}>
         <Image
           fill
-          src={auctionDetails?.mediaPhotos[0].url}
+          src={auctionDetails?.mediaPhotos?auctionDetails?.mediaPhotos[0].url:''}
           style={{ objectFit: "cover", borderRadius: "15px" }}
           alt="Image Review order"
         />

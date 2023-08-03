@@ -63,11 +63,13 @@ export default function Activity(props) {
   };
 
   const renderCards = () =>
-    getOffersQ?.data?.map((el, i) => (
+    getOffersQ?.data?.map((el, i) =>{ console.log(el); 
+      return (
       <Box key={i}>
         <AuctionOffersCard auctionId={el.auctionVehicleId} />
       </Box>
-    ));
+    )}
+    );
 
   const renderBidsCards = () =>
     bidsData?.data?.data?.map((el, i) => {
