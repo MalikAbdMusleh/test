@@ -21,6 +21,9 @@ import {
   useMakeOfferMutation,
   useWithdrawOfferMutation,
 } from "@/redux/apis/auction-salesApi/buyerApi";
+import InspectionPayment from "@/components/InspectionPayment/InspectionPayment";
+import { useGenerateStcPaymentMutation, useGetSavedCardsQuery } from "@/redux/apis/paymentApi";
+import PaymentCardsModal from "@/components/PaymentCardsModal/PaymentCardsModal";
 
 
 export default function Activity(props) {
@@ -35,23 +38,43 @@ export default function Activity(props) {
     type: "sale",
   });
 
-  useEffect(() => {
-    console.log(props);
-  }, [bidsData]);
 
   const useAuctionDetails = (auctionId) => {
     const getAuctionQ = useGetAuctionDetailsbyIDQuery({ id: auctionId }, { skip: !auctionId });
     const { currentData } = getAuctionQ;
     return currentData;
   };
+  const [openPricingOptions, setOpenPricingOptions] = useState(false);
 
   const AuctionOffersCard = ({ auctionId }) => {
     const el = useAuctionDetails(auctionId);
     const [offerDialogOpen, setOfferDialogOpen] = useState(false);
+    const [continueToPay, setContinueToPay] = useState(false);
 
     const handleCloseOfferDialog = () => {
       setOfferDialogOpen(!offerDialogOpen);
     };
+
+    const [stcPaymentQ] = useGenerateStcPaymentMutation();
+    const getSavedCardsQ = useGetSavedCardsQuery();
+
+    const [openCardsModal, setOpenCardsModal] = useState(false);
+
+    const handleToggleCardsModal = () => {
+      setOpenCardsModal(state => !state)
+    }
+
+    const handleToggleCard = (e) => setSelectedCard(e.target.value);
+
+    const handleCardClick = (type) => {
+      if (type === 'stc') {
+        stcPaymentQ({ amount: (((el?.saleOffer?.offer?.amount.amount * .01) * 1.15)).toFixed(2), auctionVehicleId: auctionId, type: 'admin_fee' }).unwrap()
+          .then((res) => {
+            window.location.reload();
+          }).catch(e => {
+          })
+      } else setOpenCardsModal(true)
+    }
 
     const [makeOfferQ] = useMakeOfferMutation();
 
@@ -108,6 +131,7 @@ export default function Activity(props) {
             flag: el?.country?.flagImagesUrl,
             saleType: el?.saleType,
           }}
+         isOffer={true}
         />
         <div
           item
@@ -151,12 +175,12 @@ export default function Activity(props) {
                         Your offer: &nbsp;
                         <Typography
                           fontSize={14}
-                          color={"red"}
+                          color={el?.saleOffer?.offer?.state === 'accepted' ? 'greenyellow' : "red"}
                           sx={{ display: "inline-block" }}
                         >
                           {el?.saleOffer?.offer?.declined
                             ? "Declined"
-                            : ""}
+                            : el?.saleOffer?.offer?.state === 'accepted' ? "Accepted" : "Pending"}
                         </Typography>
                         <Typography fontWeight={600}>
                           {
@@ -169,7 +193,7 @@ export default function Activity(props) {
                     </Grid>
 
 
-                    {!el?.saleOffer?.offer?.declined && (
+                    {!el?.saleOffer?.offer?.declined && el?.saleOffer?.offer?.state !== 'accepted' ? (
                       <CustomButton
                         onClick={() => handleWithdrawOffer()}
                         variant={"contained"}
@@ -184,7 +208,31 @@ export default function Activity(props) {
                         }}
                         label={"Withdraw"}
                       />
-                    )}
+                    ) : <div style={{ padding: "5%", marginTop: 10, width: "100%" }}>
+
+
+                      <Typography fontWeight={600}>
+                        Commission :       {
+                          el?.saleOffer?.offer?.amount
+                            .currency.code + ' '
+                        }
+                        {(((el?.saleOffer?.offer?.amount.amount * .01) * 1.15)).toFixed(2).toLocaleString()}
+                      </Typography>
+                      <div style={{ padding: "5%", marginTop: 10, width: "100%" }}>
+
+                        <CustomButton
+                          onClick={() => setOpenPricingOptions(true)}
+                          variant={"contained"}
+                          sx={{
+                            fontWeight: 800,
+                            fontSize: ".9rem",
+                            borderRadius: 1,
+                            height: "80%",
+                            width: "100%",
+                            color: "black",
+                          }}
+                          label={"Continue to payment"}
+                        /></div></div>}
 
                   </Grid>
                 )}
@@ -227,6 +275,21 @@ export default function Activity(props) {
 
             </div>
           }
+        />
+        <InspectionPayment
+          openPricingOptions={openPricingOptions}
+          setOpenPricingOptions={setOpenPricingOptions}
+          handleCardClick={handleCardClick}
+        />
+
+        <PaymentCardsModal
+          savedCards={getSavedCardsQ?.data}
+          openCardsModal={openCardsModal}
+          handleToggleCardsModal={handleToggleCardsModal}
+          handleToggleCard={handleToggleCard}
+          amount={(((el?.saleOffer?.offer?.amount.amount * .01) * 1.15)).toFixed(2)}
+          type="admin_fee"
+          inspectionReportId={auctionId}
         />
       </div>
     );

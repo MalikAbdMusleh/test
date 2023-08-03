@@ -87,7 +87,7 @@ const Report = () => {
                 <Image
                   fill
                   style={{ objectFit: 'cover', borderRadius: 6 }}
-                  src={listing.auctionVehicle.mediaPhotos[0].url}
+                  src={listing.auctionVehicle?.mediaPhotos[0]?.url}
                 />
               </Box>
             </Grid>
@@ -143,9 +143,6 @@ const Report = () => {
       <Grid container flex flexDirection={"column"} my={2}>
         <Grid item>
           <Grid container>
-            {renderCards}
-            {renderCards}
-            {renderCards}
             {renderCards}
           </Grid>
         </Grid>

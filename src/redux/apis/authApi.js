@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { HYDRATE } from "next-redux-wrapper";
-const baseUrl = '/api';
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -25,8 +25,8 @@ export const authApi = createApi({
       query: (body) => {
         if (!!body.email && !!body.password)
           return {
-            url: "/auth/login",
-            body: JSON.stringify(body),
+            url: "/login",
+            body: body,
             method: "POST",
           };
         return { error: 'incomplete' }
@@ -39,24 +39,24 @@ export const authApi = createApi({
     logout: builder.mutation({
       query: (q, state) => {
         return {
-          url: "/auth/logout"
+          url: "/logout"
         };
       },
       invalidatesTags: ['AuthToken']
     }),
     resetPassword: builder.mutation({
       query: (email) => ({
-        url: `/auth/reset-password`,
-        body:JSON.stringify({email:email}),
+        url: `/reset-password`,
+        body:{email:email},
         method: 'POST'
       }),
     }),
     register: builder.mutation({
       query(body) {
         return {
-          url: `/auth/register`,
+          url: `/register`,
           method: "POST",
-          body: JSON.stringify(body),
+          body: body,
         };
       },
       transformResponse: (response, meta, arg) => {
@@ -67,7 +67,7 @@ export const authApi = createApi({
     emailVerification: builder.mutation({
       query: (userId) => ({
         url: `/user/request-email-verification`,
-        body: JSON.stringify({ userId: userId }),
+        body: { userId: userId },
         method:'POST'
       }),
     }),

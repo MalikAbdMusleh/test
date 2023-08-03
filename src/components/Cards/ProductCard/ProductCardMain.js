@@ -13,7 +13,7 @@ import CardFooter from "./CardFooter/CardFooter";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function ProductCardMain({ data }) {
+export default function ProductCardMain({ data,isOffer=false }) {
   // 'https://cdn-staging.mazadakapp.com/country-flags/sa.png'
   return (
     <Link

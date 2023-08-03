@@ -37,6 +37,23 @@ const paymentApi = profileApi.injectEndpoints({
                             "timeZone": 273,
                             "ipAddress": "127.0.0.1"
                         }
+                    } : data.type === 'admin_fee' ? {
+                        "requestType": "admin_fee",
+                        "auctionVehicleId": data.inspectionReportId,
+                        "currencyCode": "SAR",
+                        "amount": data.amount,
+                        "paymentType": "card",
+                        "saveCard": 1,
+                        "device": {
+                            "browser": "MOZILLA",
+                            "colorDepth": 24,
+                            "javaEnabled": true,
+                            "language": "en-US",
+                            "screenHeight": 640,
+                            "screenWidth": 480,
+                            "timeZone": 273,
+                            "ipAddress": "127.0.0.1"
+                        }
                     } : {
                         requestType: data.type,
                         currencyCode: "SAR",
@@ -79,6 +96,15 @@ const paymentApi = profileApi.injectEndpoints({
                     },
                     inspection_report_basic_seller: {
                         "requestType": "inspection_report_basic_seller",
+                        "inspectionReportRequestId": data.inspectionReportId,
+                        "amount": data.amount,
+                        "currencyCode": "SAR",
+                        "tellerId": "Android",
+                        "deviceId": "MyDevice",
+                        "mobileNumber": "0557877988"
+                    },
+                    admin_fee: {
+                        "requestType": "admin_fee",
                         "inspectionReportRequestId": data.inspectionReportId,
                         "amount": data.amount,
                         "currencyCode": "SAR",
@@ -161,6 +187,25 @@ const paymentApi = profileApi.injectEndpoints({
                     },
                     inspection_report_basic_seller: {
                         "requestType": "inspection_report_basic_seller",
+                        "auctionVehicleId": data.inspectionReportId,
+                        "currencyCode": "SAR",
+                        "amount": data.amount,
+                        "paymentType": "card-tokenization",
+                        "userPaymentCardId": data.card,
+                        "saveCard": 1,
+                        "device": {
+                            "browser": "MOZILLA",
+                            "colorDepth": 24,
+                            "javaEnabled": true,
+                            "language": "en-US",
+                            "screenHeight": 640,
+                            "screenWidth": 480,
+                            "timeZone": 273,
+                            "ipAddress": "127.0.0.1"
+                        }
+                    },
+                    admin_fee: {
+                        "requestType": "admin_fee",
                         "auctionVehicleId": data.inspectionReportId,
                         "currencyCode": "SAR",
                         "amount": data.amount,

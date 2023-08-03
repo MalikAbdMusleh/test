@@ -3,7 +3,7 @@ import { HYDRATE } from "next-redux-wrapper";
 
 export const myActivityApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api",
+    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
     cache: "no-cache",
     prepareHeaders: (headers, { getState }) => {
       const accessToken = getState()?.auth?.token?.accessToken;
@@ -20,19 +20,19 @@ export const myActivityApi = createApi({
   endpoints: (builder) => ({
     getActivity: builder.query({
       query: () => ({
-        url: "/auction-search?buyerAndBuyNowUserId=273&type=ended",
+        url: "auction-vehicles?buyerAndBuyNowUserId=273&type=ended",
       }),
     }),
     getActivityByType: builder.query({
       query: (data) => ({
-        url: `/auction-search?buyerAndBuyNowUserId=${data.userId}&saleType=${data.type}`,
+        url: `auction-vehicles?buyerAndBuyNowUserId=${data.userId}&saleType=${data.type}`,
       }),
     }),
     getUserOffersActivity: builder.query({
       query: (data) => ({
         url: data.seller
-          ? `/auction-sale/offers-List?userOffers=1`
-          : `/auction-sale/offers-List?auctionVehicleId=${data.auctionVehicleId}`,
+          ? `auction-vehicles/offers/list?userOffers=1`
+          : `auction-vehicles/offers/list?auctionVehicleId=${data.auctionVehicleId}`,
       }),
     }),
   }),

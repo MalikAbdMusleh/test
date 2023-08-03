@@ -68,6 +68,7 @@ export default function SliderBlock({
       direction="row"
       display="flex"
       alignItems="center"
+      justifyContent={'center'}
       paddingX={"0px"}
       width="100%"
     >

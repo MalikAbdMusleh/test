@@ -8,15 +8,12 @@ import {
   Box,
   Divider,
   Alert,
-  Button,
-  Dialog,
   IconButton,
   Snackbar,
   TextField,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import CardMetadata from "./CardMetadata/CardMetadata";
 import CardMainData from "./CardMainData/CardMainData";
 import TimerTag from "../../Tags/TimerTag/TimerTag";
 import CardDescription from "./CardDescription/CardDescription";
@@ -28,6 +25,12 @@ import CustomButton from "@/components/CustomButton";
 import { useState } from "react";
 import CustomDialog from "@/components/CustomDialog/CustomDialog";
 import Typography from "@mui/material/Typography";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 import {
   useAcceptSpecificOfferMutation,
@@ -39,6 +42,17 @@ import SliderBlock from "@/widgets/SliderBlock/SliderBlock";
 import OfferCard from "./OfferCard";
 
 export default function ProductCardMyItem({ data, auctionDetails }) {
+
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   // 'https://cdn-staging.mazadakapp.com/country-flags/sa.png'
   const [offerDialogOpen, setOfferDialogOpen] = useState(false);
   const [snackbarState, setSnackbarState] = useState({
@@ -56,7 +70,7 @@ export default function ProductCardMyItem({ data, auctionDetails }) {
     { auctionVehicleId: data?.id },
     { skip: false }
   );
-console.log(auctionDetails);
+  console.log(auctionDetails);
 
   const [counterOfferActive, setCounterOfferActive] = useState(false);
   const [counterOfferAmount, setCounterOfferAmount] = useState("");
@@ -134,7 +148,7 @@ console.log(auctionDetails);
         }));
       });
   };
- 
+
 
   return (
     <div>
@@ -193,21 +207,21 @@ console.log(auctionDetails);
             }}
             lot={data?.lot}
           /> */}
-          {data?.isActive ? 
-            <CardMainData
-              heading={data?.title}
-              tag={
-                <CustomTag
-                  color={"#FFFFFF"}
-                  dir="ltr"
-                  tagContent={<TimerTag deadline={data?.deadline} />}
-                />
-              }
-            />:
+            {data?.isActive ?
               <CardMainData
-              heading={data?.title}
-           
-            />}
+                heading={data?.title}
+                tag={
+                  <CustomTag
+                    color={"#FFFFFF"}
+                    dir="ltr"
+                    tagContent={<TimerTag deadline={data?.deadline} />}
+                  />
+                }
+              /> :
+              <CardMainData
+                heading={data?.title}
+
+              />}
 
             <div style={{ display: "flex" }}>
               {data?.lot && <CardMainData heading={`Lot #: ${data.lot}`} />}
@@ -230,7 +244,7 @@ console.log(auctionDetails);
         </Card>
       </Link>
       {
-        data?.totalBids> 0 && data?.isActive&&data?.saleType=='sale' && (
+        data?.totalBids > 0 && data?.isActive && data?.saleType == 'sale' && (
           <div
             item
             textAlign={"center"}
@@ -255,7 +269,7 @@ console.log(auctionDetails);
         )}
       <CustomDialog
         //type={auctionDetails?.saleType}
-        open={offerDialogOpen}
+                open={offerDialogOpen}
         handleClose={handleCloseOfferDialog}
         component={
           <div>
@@ -266,20 +280,45 @@ console.log(auctionDetails);
                   spaceBetween={20}
                   slidesPerView={"auto"}
                   navigation={true}
-                >
-                  {renderOffers?.length > 0 ? (getOffersQ?.data?.map((el,index) =>  <OfferCard el={el} key={index}/>
                    
+                >
+                  {renderOffers?.length > 0 ? (getOffersQ?.data?.map((el, index) => <OfferCard el={el} lot={data?.lot} key={index} />
+
                   )) : []}
-                  
+
                 </SliderBlock>
-                {renderOffers?.length<1&&<div style={{display:'flex',justifyContent:"center",alignItems:"center",width:"100%"}}>
-                You don't have an offers yet ! 
+                {renderOffers?.length < 1 && <div style={{ display: 'flex', justifyContent: "center", alignItems: "center", width: "100%" }}>
+                  You don't have an offers yet !
                 </div>}
               </div>
             )}
           </div>
         }
       />
+      <div>
+        {/* <Button variant="outlined" onClick={handleClickOpen}>
+          Slide in alert dialog
+        </Button> */}
+        <Dialog
+          open={open}
+          // TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Let Google help apps determine location. This means sending anonymous
+              location data to Google, even when no apps are running.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Disagree</Button>
+            <Button onClick={handleClose}>Agree</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
   );
 }

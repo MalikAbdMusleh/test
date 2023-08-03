@@ -18,7 +18,7 @@ import {
 import SliderBlock from "@/widgets/SliderBlock/SliderBlock";
 
 
-export default function OfferCard({ el }) {
+export default function OfferCard({ el,lot='' }) {
   const [offerAmount, setOfferAmount] = useState(el?.counterOfferAmount?.amount);
   const [offerDialogOpen, setOfferDialogOpen] = useState(false);
   const [snackbarState, setSnackbarState] = useState({
@@ -110,15 +110,15 @@ export default function OfferCard({ el }) {
     sx={{ padding: 2, borderRadius: 3, background: "rgb(35, 35, 35)" }}
   >
     <Typography>
-      Auction ID: &nbsp;
+      Lot ID: &nbsp;
       <Typography sx={{ display: "inline-block" }} fontWeight={600}>
-        {el.auctionVehicleId}
+        {lot}
       </Typography>
     </Typography>
     <Typography>
       Offer Amount: &nbsp;
       <Typography sx={{ display: "inline-block" }} fontWeight={600}>
-        {el.amount.currency.code} {el.amount.amount}
+        {el.amount.currency.code} {el.amount.amount.toLocaleString()}
       </Typography>
     </Typography>
 
