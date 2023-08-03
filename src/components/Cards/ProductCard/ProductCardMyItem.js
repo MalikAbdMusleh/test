@@ -272,7 +272,7 @@ console.log(auctionDetails);
                   )) : []}
                   
                 </SliderBlock>
-                {renderOffers?.length<1&&<div style={{display:'flex',justifyContent:"center",alignItems:"center",width:"100vw"}}>
+                {renderOffers?.length<1&&<div style={{display:'flex',justifyContent:"center",alignItems:"center",width:"100%"}}>
                 You don't have an offers yet ! 
                 </div>}
               </div>
