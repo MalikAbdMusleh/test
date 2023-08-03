@@ -255,24 +255,7 @@ const MyItems = () => {
               You have not added any items yet ! 
               </div>}
         </TabPanel>
-        {itemsData?.auction?.length === 0 &&
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', marginLeft: 3 }}>
-            <SliderBlock
-              slideMaxWidth={300}
-              spaceBetween={10}
-              slidesPerView={"auto"}
-              navigation={true}
-            >
-              {[...Array(4)].map((_, index) => (
-                <Skeleton
-                  key={index}
-                  variant="rectangular"
-                  sx={{ width: 200, height: 200, margin: "0 16px 16px 0", borderRadius: '8px' }}
-                />
-              ))}
-            </SliderBlock>
-          </Box>
-        }
+       
       </TabPanel>
       <TabPanel value={tabVal} index={1}>
         <ItemsTabs tabs={subTabsSale} value={subTabValSale} setValue={setSubTabValSale} />
@@ -318,24 +301,7 @@ const MyItems = () => {
           {SaleActiveData?.length<1&& <div style={{display:'flex',justifyContent:"center",alignItems:"center",width:"100vw",height:'40vh'}}>
               You have not added any items yet ! 
               </div>}
-          {SaleActiveData?.length === 0 &&
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', marginLeft: 3 }}>
-              <SliderBlock
-                slideMaxWidth={300}
-                spaceBetween={10}
-                slidesPerView={"auto"}
-                navigation={true}
-              >
-                {[...Array(4)].map((_, index) => (
-                  <Skeleton
-                    key={index}
-                    variant="rectangular"
-                    sx={{ width: 200, height: 200, margin: "0 16px 16px 0", borderRadius: '8px' }}
-                  />
-                ))}
-              </SliderBlock>
-            </Box>
-          }
+  
         </TabPanel>
         <TabPanel value={subTabValSale} index={1}>
           <SliderBlock
@@ -378,24 +344,7 @@ const MyItems = () => {
           {SalePendingData?.length<1&& <div style={{display:'flex',justifyContent:"center",alignItems:"center",width:"100vw",height:'40vh'}}>
               You have not added any items yet ! 
               </div>}
-          {SalePendingData?.length === 0 &&
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', marginLeft: 3 }}>
-              <SliderBlock
-                slideMaxWidth={300}
-                spaceBetween={10}
-                slidesPerView={"auto"}
-                navigation={true}
-              >
-                {[...Array(4)].map((_, index) => (
-                  <Skeleton
-                    key={index}
-                    variant="rectangular"
-                    sx={{ width: 200, height: 200, margin: "0 16px 16px 0", borderRadius: '8px' }}
-                  />
-                ))}
-              </SliderBlock>
-            </Box>
-          }
+        
         </TabPanel>
         <TabPanel value={subTabValSale} index={2}>
           <SliderBlock
@@ -442,24 +391,7 @@ const MyItems = () => {
           {SaleEndedData?.length<1&& <div style={{display:'flex',justifyContent:"center",alignItems:"center",width:"100vw",height:'40vh'}}>
               You have not added any items yet ! 
               </div>}
-          {SaleEndedData?.length === 0 &&
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', marginLeft: 3 }}>
-              <SliderBlock
-                slideMaxWidth={300}
-                spaceBetween={10}
-                slidesPerView={"auto"}
-                navigation={true}
-              >
-                {[...Array(4)].map((_, index) => (
-                  <Skeleton
-                    key={index}
-                    variant="rectangular"
-                    sx={{ width: 200, height: 200, margin: "0 16px 16px 0", borderRadius: '8px' }}
-                  />
-                ))}
-              </SliderBlock>
-            </Box>
-          }
+        
         </TabPanel>
 
       </TabPanel>

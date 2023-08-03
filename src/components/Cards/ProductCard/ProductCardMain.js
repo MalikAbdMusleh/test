@@ -85,7 +85,7 @@ export default function ProductCardMain({ data }) {
 
           <div style={{ display: "flex" }}>
             {data?.lot && <CardMainData heading={`Lot #: ${data.lot}`} />}
-            {data?.state && <CardMainData heading={`State: ${data.state}`} />}
+            {data?.state && <CardMainData heading={`State: ${data.state}`.substring(0,13)} />}
           </div>
 
           <CardDescription info={data?.info} description={data?.description} />

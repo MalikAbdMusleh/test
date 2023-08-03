@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   useGetActivityByTypeQuery,
   useGetActivityQuery,
+  useGetUserOffersActivityQuery
 } from "@/redux/apis/account/myActivity.api";
 import { useEffect } from "react";
 
@@ -25,11 +26,14 @@ const MyActivity = () => {
     userId: user.id,
     type: "auction",
   });
-  const { data: offers } = useGetActivityByTypeQuery({
+ 
+  const { data: orders } = useGetActivityByTypeQuery({
     userId: user.id,
     type: "sale",
   });
-
+ 
+  const  offers  =useGetUserOffersActivityQuery({ seller: true });
+ 
   const acc = { bids: [], offers: [] };
   const activityData = data?.data?.reduce((acc, item) => {
     if (item.saleType === "auction") {
@@ -62,7 +66,7 @@ const MyActivity = () => {
           },
         }}
       >
-        <Grid item xs={12} sm={6} padding={{ xs: 2, sm: 5 }} gap={1}>
+        <Grid item xs={12} sm={4} padding={{ xs: 2, sm: 5 }} gap={1}>
           {isLoading && (
             <CircularProgress sx={{ color: "#00F0A9", margin: "auto" }} />
           )}
@@ -81,7 +85,7 @@ const MyActivity = () => {
             />
           )}
         </Grid>
-        <Grid item xs={12} sm={6} padding={{ xs: 2, sm: 5 }} gap={1}>
+        <Grid item xs={12} sm={4} padding={{ xs: 2, sm: 5 }} gap={1}>
           {isLoading && (
             <CircularProgress sx={{ color: "#00F0A9", margin: "auto" }} />
           )}
@@ -98,6 +102,27 @@ const MyActivity = () => {
               }
             />
           )}
+          
+        </Grid>
+        <Grid item xs={12} sm={4} padding={{ xs: 2, sm: 5 }} gap={1}>
+          {isLoading && (
+            <CircularProgress sx={{ color: "#00F0A9", margin: "auto" }} />
+          )}
+          {!isLoading && (
+            <MyActivityItem
+            title="Purchased Items"
+            Icon={ShoppingCartIcon}
+              number={orders?.data?.length || 0}
+              orders
+              
+              imgs={
+                !!activityData?.orders?.length
+                  ? ["/imgs/rav.png", "/imgs/vmf.png"]
+                  : ["/imgs/logo-large.png"]
+              }
+            />
+          )}
+          
         </Grid>
       </Grid>
     </Grid>

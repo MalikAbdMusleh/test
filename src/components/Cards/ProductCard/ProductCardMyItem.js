@@ -230,7 +230,7 @@ console.log(auctionDetails);
         </Card>
       </Link>
       {
-        data?.totalBids > 0 && (
+        data?.totalBids> 0 && data?.isActive&&data?.saleType=='sale' && (
           <div
             item
             textAlign={"center"}

@@ -9,12 +9,13 @@ export default function MyActivityItem({
   number,
   bids = false,
   offers = false,
+  orders=false,
   imgs,
 }) {
   return (
     <Grid xs={true} padding={0} width={"100%"} item>
       <Link
-        href={`/activity?type=${bids ? "auction" : "sale"}`}
+        href={`/activity?type=${orders?'orders':bids ? "auction" : "sale"}`}
         style={{ cursor: "pointer", textDecoration: "none", color: "unset" }}
       >
         <Grid
