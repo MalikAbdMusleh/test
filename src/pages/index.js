@@ -12,12 +12,18 @@ const Auction = dynamic(() => import("@/widgets/Auction/Auction"))
 export default function Home(props) {
   // const lala = useGetBusinessesListQuery()
   const theme = useTheme();
+  const setActiveTab = (tab) => {
+    console.log(tab, "tabzaid");
+  };
 
   return (
     <>
       <Tabs
         salesComponent={<Sales />}
         auctionComponent={<Auction />}
+        onTabChange={(tab) => {
+          setActiveTab(tab);
+        }}
       />
       <ScrollTop {...props}>
         <Fab

@@ -286,8 +286,7 @@ function Reviewpurchase({
                 padding: "10px",
               }}
             >
-              {auctionDetails?.vehiclePrice?.currency?.code}{" "}
-              {auctionDetails?.vehiclePrice?.amount?.toLocaleString()}
+              {pricingData[pricingData.length - 1]?.cost || "---"}
             </Typography>
           </Box>
         </Box>
@@ -309,6 +308,7 @@ function Reviewpurchase({
       <Box display={"flex"} justifyContent={"center"}>
         <Button
           onClick={() => {
+            checkoutSuccess();
             router.push(`/checkout?id=${auctionDetails?.id}`);
             checkoutSuccess();
           }}

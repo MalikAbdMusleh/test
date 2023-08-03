@@ -13,9 +13,16 @@ export default function Tabs({ salesComponent, auctionComponent }) {
   const homeData = useSelector((state) => state.home);
   const { t, i18n } = useTranslation();
 
-  const [value, setValue] = useState(homeData?.activeTab || "sale");
+  const [value, setValue] = useState(localStorage.getItem("activeTab") || homeData?.activeTab || "sale");
 
-  const handleChange = (event, newValue) => setValue(newValue);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    localStorage.setItem("activeTab", newValue);
+  };
+
+  window.onblur = function () {
+    localStorage.removeItem("activeTab");
+  };
 
   const [sidebarWidth, setSidebarWidth] = useState(undefined);
   const [sidebarTop, setSidebarTop] = useState(undefined);
@@ -57,7 +64,7 @@ export default function Tabs({ salesComponent, auctionComponent }) {
           sx={{ borderBottom: 1, borderColor: "divider", width: sidebarWidth }}
           className="sticky-tabs"
         >
-          <TabList variant="fullWidth" onChange={handleChange}>
+          <TabList variant="fullWidth" onChange={handleChange} >
             <Tab label={t("common:home.sale")} value="sale" />
             <Tab label={t("common:home.auction")} value="auction" />
           </TabList>

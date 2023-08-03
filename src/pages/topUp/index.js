@@ -7,7 +7,6 @@ import { Warning } from '@mui/icons-material'
 import { orange } from '@mui/material/colors'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import PostCompleteSuccess from '../c2c/post-complete-success';
 
 export default function TopUp() {
   const [copied, setCopied] = useState(false);

@@ -27,6 +27,8 @@ import {
 } from "@/redux/apis/walletApi";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import BankTransfer from "../BankTransfer/BankTransfer";
+import CustomDialog from "@/components/CustomDialog/CustomDialog";
 
 const Wallet = () => {
   const [isOpened, setIsOpend] = useState(false);
@@ -40,6 +42,7 @@ const Wallet = () => {
   const wallletQuery = useGetWithdrawWalletQuery();
   const minimumDeposit = useGetMinimumDepositAmountQuery();
   const profileDetails = useGetProfileAmountQuery();
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     if (wallletQuery?.isSuccess) {
@@ -364,21 +367,30 @@ const Wallet = () => {
               </Link>
             </Grid>
             <Grid item width="100%" mb={2} container justifyContent="center">
-              <Link
+              {/* <Link
                 href={{
                   pathname: "/topUp",
                   query: { paymentComplete: "true" },
                 }}
                 style={{ width: "100%", textAlign: "center" }}
-              >
+              > */}
                 <Button
                   variant="outlined"
                   color="primary"
                   sx={{ maxHeight: 58, width: "100%" }}
+                  onClick={() => setOpenDialog(true)}
                 >
                   Bank Transfer
                 </Button>
-              </Link>
+                <CustomDialog
+                open={openDialog}
+                handleClose={() => setOpenDialog(false)}
+                title={"Bank Transfer"}
+                component={
+                  <BankTransfer />
+                }
+              />
+              {/* </Link> */}
             </Grid>
             <Grid item width="100%" container justifyContent="center">
               <Link

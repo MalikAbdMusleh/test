@@ -11,8 +11,8 @@ import Typography from "@mui/material/Typography";
 import ReportIcon from '@mui/icons-material/Report';
 import GavelIcon from "@mui/icons-material/Gavel";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
 import CustomButton from "@/components/CustomButton";
+
 import {
   Alert,
   Button,
@@ -62,116 +62,125 @@ import Reviewpurchase from "@/components/Reviewpurchase/Reviewpurchase";
 import WarningParagraph from "@/widgets/C2CForm/FormComponents/WarningParagraph";
 import CardMetadata from "@/components/Cards/AuctionCard/CardMetadata/CardMetadata";
 import { Visibility } from "@mui/icons-material";
-const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
-  if (error) console.log("###ERROR");
+const LotDetails = ( { auctionDetails, category, highestBid, error } ) => {
+  if ( error ) console.log( "###ERROR" );
   const router = useRouter();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery( theme.breakpoints.down( "sm" ) );
   const formattedPrice = auctionDetails?.vehiclePrice?.amount.toLocaleString();
-  const { user } = useSelector((state) => state.auth);
-  const [topUpSucces, setTopUpSucces] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [lock, setLock] = useState(false);
-  const [inspectionReportChecked, setInspectionReportChecked] = useState(false);
-  const [openPricingOptions, setOpenPricingOptions] = useState(false);
-  const [storeInspectionQ] = useInspectionReportStoreMutation();
-  const [offerDialogOpen, setOfferDialogOpen] = useState(false);
-  const [buyDialogOpen, setBuyDialogOpen] = useState(false);
-  const [showSellerOffers, setShowSellerOffers] = useState(false);
-  const [makeOfferQ] = useMakeOfferMutation();
-  const [dataOffer, setDataOffer] = useState({
+  const { user } = useSelector( ( state ) => state.auth );
+  const [ topUpSucces, setTopUpSucces ] = useState( false );
+  const [ open, setOpen ] = useState( false );
+  const [ lock, setLock ] = useState( false );
+  const [ inspectionReportChecked, setInspectionReportChecked ] = useState( false );
+  const [ openPricingOptions, setOpenPricingOptions ] = useState( false );
+  const [ storeInspectionQ ] = useInspectionReportStoreMutation();
+  const [ offerDialogOpen, setOfferDialogOpen ] = useState( false );
+  const [ buyDialogOpen, setBuyDialogOpen ] = useState( false );
+  const [ showSellerOffers, setShowSellerOffers ] = useState( false );
+  const [ makeOfferQ ] = useMakeOfferMutation();
+  const [ dataOffer, setDataOffer ] = useState( {
+
     auctionedPrice: "",
     currency: "",
-  });
-  const [lockBuyQ] = useLockBuyMutation();
-  const [withdrawOfferQ] = useWithdrawOfferMutation();
-  const [acceptOfferQ] = useAcceptSpecificOfferMutation();
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleTopupSuccess = () => setTopUpSucces(true);
-  const handleCloseTopupSuccess = () => setTopUpSucces(false);
+  } );
+  const [disabled, setDisabled] = useState(false);
+  useEffect(() => {
+    if (auctionDetails?.vehicleIsLocked) {
+      setDisabled(true);
+    }
+  }, [auctionDetails?.buyer]);
+  const [ lockBuyQ ] = useLockBuyMutation();
+  const [ withdrawOfferQ ] = useWithdrawOfferMutation();
+  const [ acceptOfferQ ] = useAcceptSpecificOfferMutation();
+  const handleOpen = () => setOpen( true );
+  const handleClose = () => setOpen( false );
+  const handleTopupSuccess = () => setTopUpSucces( true );
+  const handleCloseTopupSuccess = () => setTopUpSucces( false );
   const handleOpenOfferDialog = () => {
-    if (user?.deposit?.amount === undefined) router.push("/auth");
-    else setOfferDialogOpen(true);
+    if ( user?.deposit?.amount === undefined ) router.push( "/auth" );
+    else setOfferDialogOpen( true );
   };
   const handleOpenBuyDialog = () => {
-    setBuyDialogOpen(true);
+    setBuyDialogOpen( true );
   };
-  const handleCloseOfferDialog = () => setOfferDialogOpen(false);
-  const handleCloseBuyDialog = () => setBuyDialogOpen(false);
+  const handleCloseOfferDialog = () => setOfferDialogOpen( false );
+  const handleCloseBuyDialog = () => setBuyDialogOpen( false );
   const checkoutSuccess = () => {
-    setLock(true);
-  }
-  const onPayForInspection = () => setOpenPricingOptions(false);
+    setLock( true );
+  };
+  const onPayForInspection = () => setOpenPricingOptions( false );
+
   const enoughBalance =
     user?.deposit?.amount >= auctionDetails?.depositAmount?.amount;
-  const [snackbarState, setSnackbarState] = useState({
+  const [ snackbarState, setSnackbarState ] = useState( {
     open: false,
     message: "",
     type: "error",
-  });
-  const [offerWithdrawn, setOfferWithdrawn] = useState(false);
+  } );
+  const [ offerWithdrawn, setOfferWithdrawn ] = useState( false );
   const getOffersQ = useGetUserOffersQuery(
     { auctionVehicleId: auctionDetails?.id },
     { skip: !showSellerOffers }
   );
-  const [counterOfferQ] = useCounterOfferMutation();
+  const [ counterOfferQ ] = useCounterOfferMutation();
   const getSavedCardsQ = useGetSavedCardsQuery();
-  const [switchState, setSwitchState] = useState(false);
-  const [openCardsModal, setOpenCardsModal] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const [selectedCard, setSelectedCard] = useState();
-  const [inspectionReportId, setInspectionReportId] = useState();
-  const handleToggleCard = (e) => setSelectedCard(e.target.value);
+  const [ switchState, setSwitchState ] = useState( false );
+  const [ openCardsModal, setOpenCardsModal ] = useState( false );
+  const [ inputValue, setInputValue ] = useState( "" );
+  const [ selectedCard, setSelectedCard ] = useState();
+  const [ inspectionReportId, setInspectionReportId ] = useState();
+  const handleToggleCard = ( e ) => setSelectedCard( e.target.value );
   const handleToggleCardsModal = () => {
-    setOpenCardsModal((state) => !state);
+    setOpenCardsModal( ( state ) => !state );
   };
 
   const onPayForReport = () => {
-    storeInspectionQ(auctionDetails?.id)
+    storeInspectionQ( auctionDetails?.id )
       .unwrap()
-      .then((res) => {
-        setInspectionReportId(res.id);
-        setOpenPricingOptions(true);
-      })
-      .catch((e) => {
-        setSnackbarState((state) => ({
+      .then( ( res ) => {
+        setInspectionReportId( res.id );
+        setOpenPricingOptions( true );
+      } )
+      .catch( ( e ) => {
+        setSnackbarState( ( state ) => ( {
           ...state,
           open: true,
-          message: e.message || e.data.payload.validation[0].errors[0].message,
-        }));
-      });
+          message: e.message || e.data.payload.validation[ 0 ].errors[ 0 ].message,
+        } ) );
+      } );
   };
 
-  const [days, setDays] = useState(0);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const [ days, setDays ] = useState( 0 );
+  const [ hours, setHours ] = useState( 0 );
+  const [ minutes, setMinutes ] = useState( 0 );
+  const [ seconds, setSeconds ] = useState( 0 );
   var secondsLeft = auctionDetails?.timeRemaining?.secondsLeft;
   const getTime = () => {
-    secondsLeft--
-    setDays(Math.floor(secondsLeft / (1 * 60 * 60 * 24)));
-    setHours(Math.floor((secondsLeft / (1 * 60 * 60)) % 24));
-    setMinutes(Math.floor((secondsLeft / 1 / 60) % 60));
-    setSeconds(Math.floor((secondsLeft / 1) % 60));
+    secondsLeft--;
+    setDays( Math.floor( secondsLeft / ( 1 * 60 * 60 * 24 ) ) );
+    setHours( Math.floor( ( secondsLeft / ( 1 * 60 * 60 ) ) % 24 ) );
+    setMinutes( Math.floor( ( secondsLeft / 1 / 60 ) % 60 ) );
+    setSeconds( Math.floor( ( secondsLeft / 1 ) % 60 ) );
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => getTime(), 1000);
-    return () => clearInterval(interval);
-  }, []);
+  useEffect( () => {
+    const interval = setInterval( () => getTime(), 1000 );
+    return () => clearInterval( interval );
+  }, [] );
 
-  useEffect(() => {
+
+  useEffect( () => {
     getTime();
-    const interval = setInterval(() => getTime(), 60000);
-    return () => clearInterval(interval);
-  }, []);
+    const interval = setInterval( () => getTime(), 60000 );
+    return () => clearInterval( interval );
+  }, [] );
 
-  const renderImages = auctionDetails?.mediaPhotos?.map((item, i) => (
+  const renderImages = auctionDetails?.mediaPhotos?.map( ( item, i ) => (
     <Box key={i} sx={{ height: { xs: "200px", sm: "600px", md: "900px" } }}>
-      <Image fill src={item?.url} style={{ objectFit: "contain" }} />
+      <Image fill src={item?.url} style={{ objectFit: "contain" }} alt="" />
     </Box>
-  ));
+  ) );
 
   const propertiesMapping = [
     { title: "Make", path: auctionDetails?.vehicleModel?.vehicleMake?.name },
@@ -194,12 +203,12 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
   ];
 
   // Temporary: filter all undefined details until there is a sample response of the details of other products (bid items)
-  const filteredProperties = propertiesMapping.filter((p) => p.path);
+  const filteredProperties = propertiesMapping.filter( ( p ) => p.path );
 
   const renderProperties = filteredProperties.map(
-    ({ title, path }, i) =>
-      (title || path) &&
-      (path != null || path != "") && (
+    ( { title, path }, i ) =>
+      ( title || path ) &&
+      ( path != null || path != "" ) && (
         <Grid item xs={6} md={3} key={i}>
           <Typography fontWeight={300} fontSize={13} sx={{ color: "white" }}>
             {title}
@@ -213,7 +222,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
     auctionDetails?.addOns?.inspectionReport?.categoryPriceType;
 
   let inspectionCategory = "";
-  switch (inspectionType) {
+  switch ( inspectionType ) {
     case "initial":
       inspectionCategory = "inspectionInitialPrice";
       break;
@@ -226,10 +235,10 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
   }
   const inspectionPrice =
     auctionDetails?.vehicleModel?.categories.length > 0
-      ? auctionDetails?.vehicleModel?.categories[0][inspectionCategory]?.amount
+      ? auctionDetails?.vehicleModel?.categories[ 0 ][ inspectionCategory ]?.amount
       : null;
   const handleBuyNow = () => {
-    if (user?.deposit?.amount === undefined) router.push("/auth");
+    if ( user?.deposit?.amount === undefined ) router.push( "/auth" );
     else {
       if (enoughBalance) {
         handleOpenBuyDialog()
@@ -261,120 +270,120 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
   };
 
   const handleWithdrawOffer = () => {
-    withdrawOfferQ({ auctionVehicleId: auctionDetails?.id })
+    withdrawOfferQ( { auctionVehicleId: auctionDetails?.id } )
       .unwrap()
-      .then((res) => {
-        setSnackbarState((state) => ({
+      .then( ( res ) => {
+        setSnackbarState( ( state ) => ( {
           type: "success",
           open: true,
           message: "Withdrawn Successfully!",
-        }));
-        setOfferWithdrawn(true);
-      })
-      .catch((e) => {
-        setSnackbarState((state) => ({
+        } ) );
+        setOfferWithdrawn( true );
+      } )
+      .catch( ( e ) => {
+        setSnackbarState( ( state ) => ( {
           type: "error",
           open: true,
-          message: e.data.payload.validation[0].errors[0].message,
-        }));
-      });
+          message: e.data.payload.validation[ 0 ].errors[ 0 ].message,
+        } ) );
+      } );
   };
   const toggleSellerOffers = () => {
-    setShowSellerOffers((state) => !state);
+    setShowSellerOffers( ( state ) => !state );
   };
 
-  const [declineOfferQ] = useDeclineOfferMutation();
+  const [ declineOfferQ ] = useDeclineOfferMutation();
 
-  const handleDeclineOffer = (id) => {
-    declineOfferQ({ auctionVehicleSaleOfferId: id })
+  const handleDeclineOffer = ( id ) => {
+    declineOfferQ( { auctionVehicleSaleOfferId: id } )
       .unwrap()
-      .then((res) => {
-        setSnackbarState((state) => ({
+      .then( ( res ) => {
+        setSnackbarState( ( state ) => ( {
           type: "success",
           open: true,
           message: "Declined Successfully!",
-        }));
-      })
-      .catch((e) => {
-        setSnackbarState((state) => ({
+        } ) );
+      } )
+      .catch( ( e ) => {
+        setSnackbarState( ( state ) => ( {
           type: "error",
           open: true,
-          message: e.data.payload.validation[0].errors[0].message,
-        }));
-      });
+          message: e.data.payload.validation[ 0 ].errors[ 0 ].message,
+        } ) );
+      } );
   };
 
-  const [counterOfferActive, setCounterOfferActive] = useState(false);
+  const [ counterOfferActive, setCounterOfferActive ] = useState( false );
 
-  const toggleCounterOffer = () => setCounterOfferActive((state) => !state);
-  const handleCounterOffer = (id, amount) => {
-    counterOfferQ({ id, amount: amount })
+  const toggleCounterOffer = () => setCounterOfferActive( ( state ) => !state );
+  const handleCounterOffer = ( id, amount ) => {
+    counterOfferQ( { id, amount: amount } )
       .unwrap()
-      .then((res) => {
-        setSnackbarState((state) => ({
+      .then( ( res ) => {
+        setSnackbarState( ( state ) => ( {
           type: "success",
           open: true,
           message: "Counter Offer Made Successfully!",
-        }));
+        } ) );
         toggleCounterOffer();
-      })
-      .catch((e) => {
-        setSnackbarState((state) => ({
+      } )
+      .catch( ( e ) => {
+        setSnackbarState( ( state ) => ( {
           type: "error",
           open: true,
-          message: e.data.payload.validation[0].errors[0].message,
-        }));
-      });
+          message: e.data.payload.validation[ 0 ].errors[ 0 ].message,
+        } ) );
+      } );
   };
 
-  const handleAcceptSpecificOffer = (id) => {
-    acceptOfferQ({ auctionVehicleSaleOfferId: id })
+  const handleAcceptSpecificOffer = ( id ) => {
+    acceptOfferQ( { auctionVehicleSaleOfferId: id } )
       .unwrap()
-      .then((res) => {
-        setSnackbarState((state) => ({
+      .then( ( res ) => {
+        setSnackbarState( ( state ) => ( {
           type: "success",
           open: true,
           message: "Offer Accepted Successfully!",
-        }));
-      })
-      .catch((e) => {
-        setSnackbarState((state) => ({
+        } ) );
+      } )
+      .catch( ( e ) => {
+        setSnackbarState( ( state ) => ( {
           type: "error",
           open: true,
-          message: e.message || e.data.payload.validation[0].errors[0].message,
-        }));
-      });
+          message: e.message || e.data.payload.validation[ 0 ].errors[ 0 ].message,
+        } ) );
+      } );
   };
-
-  const handleAcceptCounterOffer = (amount) => {
-    makeOfferQ({
+  console.log("auctionDetails", auctionDetails)
+  const handleAcceptCounterOffer = ( amount ) => {
+    makeOfferQ( {
       auctionVehicleId: auctionDetails.id,
       amount: auctionDetails?.saleOffer?.offer?.counterOfferAmount?.amount,
       currencyCode: auctionDetails.currency.code,
-    })
+    } )
       .unwrap()
-      .then((res) => {
-        router.replace(router.asPath);
-      })
-      .catch((e) => {
-        setSnackbarState((state) => ({
+      .then( ( res ) => {
+        router.replace( router.asPath );
+      } )
+      .catch( ( e ) => {
+        setSnackbarState( ( state ) => ( {
           ...state,
           open: true,
           message: !!e?.data?.payload?.validation?.length
-            ? e?.data?.payload?.validation[0]?.errors[0]?.message
+            ? e?.data?.payload?.validation[ 0 ]?.errors[ 0 ]?.message
             : e.data.message,
-        }));
-      });
+        } ) );
+      } );
   };
 
-  const [stcPaymentQ] = useGenerateStcPaymentMutation();
-  const handleCardClick = (type) => {
-    if (type === "stc") {
-      stcPaymentQ({
+  const [ stcPaymentQ ] = useGenerateStcPaymentMutation();
+  const handleCardClick = ( type ) => {
+    if ( type === "stc" ) {
+      stcPaymentQ( {
         amount: inspectionPrice,
         inspectionReportId,
         type: "inspection_report_advanced_buyer",
-      })
+      } )
         .unwrap()
         .then((res) => {
           window.location.reload();
@@ -413,10 +422,10 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
           </Typography>
         )}
         <Box>
-          <Button onClick={() => handleAcceptSpecificOffer(el.id)}>
+          <Button onClick={() => handleAcceptSpecificOffer( el.id )}>
             Accept
           </Button>
-          <Button onClick={() => handleDeclineOffer(el.id)}>Decline</Button>
+          <Button onClick={() => handleDeclineOffer( el.id )}>Decline</Button>
           <Button onClick={toggleCounterOffer}>Counter</Button>
         </Box>
         {counterOfferActive && (
@@ -424,11 +433,11 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
             <TextField
               value={counterOfferAmount}
               type="number"
-              onChange={(e) => setCounterOfferAmount(e.target.value)}
+              onChange={( e ) => setCounterOfferAmount( e.target.value )}
               label="counter offer amount"
             />
             <Button
-              onClick={() => handleCounterOffer(el.id, counterOfferAmount)}
+              onClick={() => handleCounterOffer( el.id, counterOfferAmount )}
             >
               Send Offer
             </Button>
@@ -565,7 +574,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
                         fontSize={14}
                       >
                         {auctionDetails?.geoLocation?.length &&
-                          auctionDetails?.geoLocation[0].text}
+                          auctionDetails?.geoLocation[ 0 ].text}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -625,7 +634,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
                         <Typography>Buy an Inspection Report</Typography>
                         <IOSSwitch
                           onChange={() =>
-                            setInspectionReportChecked((state) => !state)
+                            setInspectionReportChecked( ( state ) => !state )
                           }
                           value={inspectionReportChecked}
                         />
@@ -755,8 +764,8 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
                         )}
                       </Grid>
                       {auctionDetails?.highestBidPrice?.amount &&
-                        (auctionDetails?.saleType === "auction" ||
-                          auctionDetails?.saleOffer?.canAcceptOffers) && (
+                        ( auctionDetails?.saleType === "auction" ||
+                          auctionDetails?.saleOffer?.canAcceptOffers ) && (
                           <Grid
                             container
                             flexDirection={"column"}
@@ -795,7 +804,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
                     </Grid>
 
                     <Divider sx={{ margin: "10px 0" }} />
-                    {auctionDetails?.buyer && (
+                    {disabled && (
                       <Grid item textAlign={"center"}>
                         <Typography fontSize={18} color={"rgb(160,70,88)"}>
                           This sale is reserved
@@ -826,7 +835,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
                               width: "84%",
                             }}
                             label={"Place Bid"}
-                            disabled={auctionDetails?.buyer}
+                            disabled={disabled}
                           />
                         </Grid>
                       )}
@@ -852,7 +861,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
                               width: "84%",
                             }}
                             label={"Buy Now"}
-                            disabled={auctionDetails?.buyer}
+                            disabled={disabled}
                           />
                         </Grid>
                       )}
@@ -874,7 +883,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
                               width: "84%",
                             }}
                             label={"Make Offer"}
-                            disabled={auctionDetails?.buyer}
+                            disabled={disabled}
                           />
                         </Grid>
                       )}
@@ -1017,7 +1026,7 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
           <Snackbar
             open={snackbarState.open}
             onClose={() =>
-              setSnackbarState((state) => ({ ...state, open: false }))
+              setSnackbarState( ( state ) => ( { ...state, open: false } ) )
             }
             autoHideDuration={2000}
           >
@@ -1090,27 +1099,27 @@ const LotDetails = ({ auctionDetails, category, highestBid, error }) => {
 };
 export default LotDetails;
 
-export const getServerSideProps = async ({ req, res, query }) => {
-  const cookies = new Cookies(req, res);
-  const accessToken = cookies.get("accessToken");
+export const getServerSideProps = async ( { req, res, query } ) => {
+  const cookies = new Cookies( req, res );
+  const accessToken = cookies.get( "accessToken" );
   const headers = { Authorization: `Bearer ${accessToken}` };
 
   const auctionId = query.id;
-  const auctionDetails = await fetchApi({
+  const auctionDetails = await fetchApi( {
     url: `auction-vehicles/${auctionId}`,
     headers,
-  });
-  const auctionTypes = await fetchApi({
+  } );
+  const auctionTypes = await fetchApi( {
     url: `auction-vehicle-types`,
     headers,
-  });
+  } );
 
   return {
     props: {
       auctionDetails,
-      category: auctionTypes.filter((item) => {
+      category: auctionTypes.filter( ( item ) => {
         return item.id == auctionDetails?.auctionVehicleTypeId;
-      }),
+      } ),
     },
   };
 };

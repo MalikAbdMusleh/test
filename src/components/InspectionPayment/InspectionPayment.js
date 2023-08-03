@@ -2,6 +2,10 @@ import { Button } from "@mui/material";
 import { Dialog, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
+import CustomDialog from "../CustomDialog/CustomDialog";
+import BankTransfer from "@/widgets/BankTransfer/BankTransfer";
+import { useState } from "react";
+
 
 const InspectionPayment = ({
   openPricingOptions,
@@ -9,6 +13,7 @@ const InspectionPayment = ({
   handleCardClick,
 }) => {
   const onPayForInspection = () => setOpenPricingOptions(false);
+  const [openDialog, setOpenDialog] = useState(false);
   return (
     <Dialog
       onClose={() => setOpenPricingOptions(false)}
@@ -106,13 +111,13 @@ const InspectionPayment = ({
               <img src="/imgs/paymentIcons/stc.svg" alt="stc"/>
             </Button>
           </Grid>
-          <Link
+          {/* <Link
                 href={{
                   pathname: "/topUp",
                   query: { paymentComplete: "true" },
                 }}
                 style={{ width: "100%", textAlign: "center" }}
-              >
+              > */}
                 <Button
                   xs={12}
                   style={{
@@ -126,10 +131,19 @@ const InspectionPayment = ({
                     marginBottom: '10px',
                     textAlign: 'center',
                   }}
+                  onClick={() => setOpenDialog(true)}
                 >
                   Bank Transfer
                 </Button>
-              </Link>
+              {/* </Link> */}
+              <CustomDialog
+                open={openDialog}
+                handleClose={() => setOpenDialog(false)}
+                title={"Bank Transfer"}
+                component={
+                  <BankTransfer />
+                }
+              />
         </Grid>
       </Grid>
     </Dialog>

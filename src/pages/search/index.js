@@ -54,6 +54,10 @@ export default function Search() {
     searchInput: "",
   });
 
+  window.onblur = function () {
+    localStorage.removeItem("searchInput");
+  };
+
   const toggleSortModal = () => {
     setState((prevState) => ({
       ...prevState,
@@ -68,13 +72,14 @@ export default function Search() {
       ...prevState,
       searchInput: value,
     }));
+    localStorage.setItem("searchInput", value);
   };
   return (
     <Box marginTop={3} marginBottom={5}>
       <Box marginBottom={2}>
         <SearchContainer
           hideSearch
-          searchValue={state.searchInput}
+          searchValue={state.searchInput || localStorage.getItem("searchInput")}
           onSearchInputChange={handleSearchInputChange}
         />
         <Box>
